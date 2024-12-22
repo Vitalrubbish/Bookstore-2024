@@ -2,6 +2,8 @@
 #define BOOK_H
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include<algorithm>
 #include <cstring>
 
 using std::string;
@@ -52,12 +54,12 @@ public:
 
     NodeHead_for_Books(const std::string &file_name) {
         this -> file_name = file_name;
-        //file.open(file_name, std::ios::in|std::ios::out|std::ios::binary);
-        //if (!file.is_open()) {
+        file.open(file_name, std::ios::in|std::ios::out|std::ios::binary);
+        if (!file.is_open()) {
             file.open(file_name, std::ios::out);
             file.close();
             file.open(file_name, std::ios::in|std::ios::out|std::ios::binary);
-        //}
+        }
     }
 
     ~NodeHead_for_Books() {
@@ -131,12 +133,12 @@ public:
 
     NodeBody_for_Books(const std::string &file_name) {
         this -> file_name = file_name;
-        //file.open(file_name, std::ios::in|std::ios::out|std::ios::binary);
-        //if (!file.is_open()) {
+        file.open(file_name, std::ios::in|std::ios::out|std::ios::binary);
+        if (!file.is_open()) {
             file.open(file_name, std::ios::out);
             file.close();
             file.open(file_name, std::ios::in|std::ios::out|std::ios::binary);
-        //}
+        }
     }
 
     ~NodeBody_for_Books() {
@@ -180,11 +182,17 @@ public:
 
     void Insert(const std::string &);
 
-    void Import(int);
+    void Insert_(Book);
+
+    void Delete();
+
+    bool Import(int);
 
     void Show(int, const std::string &);
 
     double Buy(const std::string &, int);
+
+    static std::vector<std::string> Key_Split(const std::string &);
 
     static int string_cmp(char*, char*, int, int);
 

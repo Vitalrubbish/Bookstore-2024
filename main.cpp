@@ -6,7 +6,7 @@
 #include "diary.h"
 #include "finance.h"
 
-Finance Money ("../database/finance");
+Finance Money ("./database/finance");
 User_Operation User_op;
 Book_Operation Book_op;
 
@@ -44,23 +44,19 @@ std::vector<std::string> inner_Split(const std::string &original) {
     std::vector<std::string> token;
     token.clear();
     int len = static_cast<int>(original.size());
-    int p = 0;
-    std::string cur;
-    while (p < len) {
-        if (original[p] == '-' || original[p] == '=' || original[p] == '\"') {
-            if (!cur.empty()) {
-                token.push_back(cur);
-                cur = "";
-            }
-            p++;
-            continue;
-        }
-        cur += original[p];
+    int p = 1, cur;
+    while (original[p] != '=') {
         p++;
     }
-    if (!cur.empty()) {
-        token.push_back(cur);
+    token.push_back(original.substr(1, p - 1));
+    while (original[p] == '=' || original[p] == '\"') {
+        p++;
     }
+    cur = p;
+    while (p < len && original[p] != '\"') {
+        p++;
+    }
+    token.push_back(original.substr(cur, p - cur));
     return token;
 }
 
@@ -176,8 +172,26 @@ int main() {
             }
             User_op.Delete(token[1]);
         }
+        else if (token.size() > 1 && token[0] == "show" && token[1] == "finance") {
+            if (User_op.current_User.privilege < 7) {
+                std::cout << "Invalid" << '\n';
+                continue;
+            }
+            if (token.size() == 2) {
+                Money.readFinance(-1);
+                continue;
+            }
+            if (token.size() == 3) {
+                Money.readFinance(stringToInt(token[2]));
+                continue;
+            }
+            std::cout << "Invalid" << '\n';
+        }
         else if (token[0] == "show") {
-            // todo 处理无参数的情况
+            if (User_op.current_User.privilege < 1) {
+                std::cout << "Invalid" << '\n';
+                continue;
+            }
             if (token.size() == 1) {
                 Book_op.Show(-1, "");
                 continue;
@@ -190,21 +204,48 @@ int main() {
             std::cout << "Invalid" << '\n';
         }
         else if (token[0] == "buy") {
+            if (User_op.current_User.privilege < 1) {
+                std::cout << "Invalid" << '\n';
+                continue;
+            }
+            if (stringToInt(token[2]) <= 0) {
+                std::cout << "Invalid" << '\n';
+                continue;
+            }
             double cost = Book_op.Buy(token[1], stringToInt(token[2]));
+            if (cost == 0) {
+                std::cout << "Invalid" << '\n';
+                continue;
+            }
             Money.writeFinance(1, cost);
         }
         else if (token[0] == "select") {
+            if (User_op.current_User.privilege < 3) {
+                std::cout << "Invalid" << '\n';
+                continue;
+            }
             Book_op.Select(token[1]);
         }
         else if (token[0] == "modify") {
+            if (User_op.current_User.privilege < 3) {
+                std::cout << "Invalid" << '\n';
+                continue;
+            }
             for (int i = 1; i < token.size(); i++) {
                 std::vector<std::string> inner_token = inner_Split(token[i]);
                 Book_op.Modify(getType(inner_token[0]), inner_token[1]);
             }
         }
         else if (token[0] == "import") {
-            double cost = Book_op.stringToDouble(token[2]);
-            Money.writeFinance(2, cost);
+            if (User_op.current_User.privilege < 3) {
+                std::cout << "Invalid" << '\n';
+                continue;
+            }
+            bool check = Book_op.Import(stringToInt(token[1]));
+            if (check) {
+                double cost = Book_Operation::stringToDouble(token[2]);
+                Money.writeFinance(2, cost);
+            }
         }
         else {
             std::cout << "Invalid" << '\n';

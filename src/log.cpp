@@ -1,8 +1,8 @@
 #include "log.h"
 
 User_Operation::User_Operation():
-    Head("../database/NodeHead_for_users"),
-    Body("../database/NodeBody_for_users") {
+    Head("./database/NodeHead_for_users"),
+    Body("./database/NodeBody_for_users") {
     initialise();
     current_User.privilege = 0;
     login_stack.push_back(current_User);
@@ -15,11 +15,11 @@ User_Operation::~User_Operation(){
 void User_Operation::initialise() {
     fstream file_;
     bloc = new User[block_size + 1];
-    //file_.open("../database/Host_for_users", std::ios::in|std::ios::out);
-    //if (!file_.is_open()) {
-        file_.open("../database/Host_for_users", std::ios::out);
+    file_.open("./database/Host_for_users", std::ios::in|std::ios::out);
+    if (!file_.is_open()) {
+        file_.open("./database/Host_for_users", std::ios::out);
         file_.close();
-        file_.open("../database/Host_for_users", std::ios::in|std::ios::out|std::ios::binary);
+        file_.open("./database/Host_for_users", std::ios::in|std::ios::out|std::ios::binary);
         Head.new_id = -1;
         Head.cur_size = 0;
         Head.head = -1;
@@ -27,7 +27,7 @@ void User_Operation::initialise() {
         file_.write(reinterpret_cast<char*>(&Head.cur_size), sizeof(int));
         file_.write(reinterpret_cast<char*>(&Head.head), sizeof(int));
         Insert("root", "sjtu", "supervisor", 7);
-    /*}
+    }
     else {
         file_.read(reinterpret_cast<char*>(&Head.new_id), sizeof(int));
         file_.read(reinterpret_cast<char*>(&Head.cur_size), sizeof(int));
@@ -37,13 +37,13 @@ void User_Operation::initialise() {
             link[p] = Head.visitHead(p);
             p = link[p].nex_head;
         }
-    }*/
+    }
     file_.close();
 }
 
 void User_Operation::flush() {
     fstream file_;
-    file_.open("../database/Host_for_books", std::ios::in|std::ios::out|std::ios::binary);
+    file_.open("./database/Host_for_books", std::ios::in|std::ios::out|std::ios::binary);
     file_.seekp(0);
     file_.write(reinterpret_cast<char*>(&Head.new_id), sizeof(int));
     file_.write(reinterpret_cast<char*>(&Head.cur_size), sizeof(int));

@@ -48,12 +48,12 @@ public:
 
     NodeHead_for_Users(const std::string &file_name) {
         this -> file_name = file_name;
-        //file.open(file_name, std::ios::in|std::ios::out|std::ios::binary);
-        //if (!file.is_open()) {
+        file.open(file_name, std::ios::in|std::ios::out|std::ios::binary);
+        if (!file.is_open()) {
             file.open(file_name, std::ios::out);
             file.close();
             file.open(file_name, std::ios::in|std::ios::out|std::ios::binary);
-        //}
+        }
     }
 
     ~NodeHead_for_Users() {
@@ -123,12 +123,12 @@ public:
 
     NodeBody_for_Users(const std::string &file_name) {
         this -> file_name = file_name;
-        //file.open(file_name, std::ios::in|std::ios::out|std::ios::binary);
-        //if (!file.is_open()) {
+        file.open(file_name, std::ios::in|std::ios::out|std::ios::binary);
+        if (!file.is_open()) {
             file.open(file_name, std::ios::out);
             file.close();
             file.open(file_name, std::ios::in|std::ios::out|std::ios::binary);
-        //}
+        }
     }
 
     ~NodeBody_for_Users() {
