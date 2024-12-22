@@ -6,7 +6,7 @@
 #include "diary.h"
 #include "finance.h"
 
-Finance Money ("../database/finance");
+Finance Money ("../finance");
 User_Operation User_op;
 Book_Operation Book_op;
 
