@@ -1,8 +1,8 @@
 #include "book.h"
 
 Book_Operation::Book_Operation():
-    Head("./database/NodeHead_for_books"),
-    Body("./database/NodeBody_for_books") {
+    Head("../database/NodeHead_for_books"),
+    Body("../database/NodeBody_for_books") {
     select = false;
     initialise();
 }
@@ -13,11 +13,11 @@ Book_Operation::~Book_Operation() {
 
 void Book_Operation::initialise() {
     fstream file_;
-    file_.open("./database/Host_for_Books", std::ios::in|std::ios::out);
+    file_.open("../database/Host_for_Books", std::ios::in|std::ios::out);
     if (!file_.is_open()) {
-        file_.open("./database/Host_for_Books", std::ios::out);
+        file_.open("../database/Host_for_Books", std::ios::out);
         file_.close();
-        file_.open("./database/Host_for_Books", std::ios::in|std::ios::out|std::ios::binary);
+        file_.open("../database/Host_for_Books", std::ios::in|std::ios::out|std::ios::binary);
         Head.new_id = -1;
         Head.cur_size = 0;
         Head.head = -1;
@@ -41,7 +41,7 @@ void Book_Operation::initialise() {
 
 void Book_Operation::flush() {
     fstream file_;
-    file_.open("./database/Host_for_Books", std::ios::in|std::ios::out|std::ios::binary);
+    file_.open("../database/Host_for_Books", std::ios::in|std::ios::out|std::ios::binary);
     file_.seekp(0);
     file_.write(reinterpret_cast<char*>(&Head.new_id), sizeof(int));
     file_.write(reinterpret_cast<char*>(&Head.cur_size), sizeof(int));

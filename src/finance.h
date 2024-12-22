@@ -16,12 +16,12 @@ public:
 
     Finance(const std::string &file_name) {
         this->file_name = file_name;
-        //file.open(file_name, std::ios::in|std::ios::out);
-        //if (!file.is_open()) {
-        file.open(file_name, std::ios::out);
-        file.close();
-        file.open(file_name, std::ios::in | std::ios::out);
-        //}
+        file.open(file_name, std::ios::in|std::ios::out);
+        if (!file.is_open()) {
+            file.open(file_name, std::ios::out);
+            file.close();
+            file.open(file_name, std::ios::in | std::ios::out);
+        }
     }
 
     ~Finance() {
@@ -29,7 +29,7 @@ public:
     }
 
      void readFinance(int count) {
-        file.seekp(0,std::fstream::end);
+        file.seekp(0, file.end);
         int end = file.tellp();
         if (count > 0 && end < count * sizeof(Record)) {
             std::cout << "Invalid" << '\n';
@@ -58,10 +58,10 @@ public:
     }
 
     void writeFinance(int type, double finance) {
-        Record new_record;
+        Record new_record{};
         new_record.type = type;
         new_record.amount = finance;
-        file.seekp(0,std::fstream::end);
+        file.seekp(0,file.end);
         file.write(reinterpret_cast<char*> (&new_record), sizeof(Record));
     }
 
