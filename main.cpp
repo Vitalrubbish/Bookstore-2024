@@ -12,15 +12,15 @@ Book_Operation Book_op;
 
 User* bloc = nullptr;
 Book* bloc_ = nullptr;
-Pair* bloc1 = nullptr;
-Pair1* bloc2 = nullptr;
+Pair1* bloc1 = nullptr;
+Pair2* bloc2 = nullptr;
 Pair3* bloc3 = nullptr;
 
 HeadNode link[100001];
 HeadNode_ link_[100001];
 HeadNode1 link1[100001];
-HeadNode3 link2[100001];
-HeadNode2 link3[100001];
+HeadNode2 link2[100001];
+HeadNode3 link3[100001];
 
 std::vector<std::string> Split(const std::string &original) {
     std::vector<std::string> token;

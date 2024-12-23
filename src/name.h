@@ -10,7 +10,7 @@ using std::ofstream;
 
 const int block_size1 = 128;
 
-struct Pair {
+struct Pair1 {
     char key[61];
     char value[21];
     int key_len;
@@ -25,10 +25,10 @@ struct HeadNode1 {
     int cur_index;
 };
 
-extern Pair* bloc1;
+extern Pair1* bloc1;
 extern HeadNode1 link1[100001];
 
-const int sizeofP0 = sizeof(Pair);
+const int sizeofP0 = sizeof(Pair1);
 const int sizeofH0 = 4 * sizeof(int);
 
 class NodeHead_for_name {
@@ -137,7 +137,7 @@ public:
 
     void visitNode(int index) {
         delete[] bloc1;
-        bloc1 = new Pair[block_size1 + 1];
+        bloc1 = new Pair1[block_size1 + 1];
         file.seekp(index * sizeofP0);
         file.read(reinterpret_cast<char*>(bloc1), link1[index / block_size1].size * sizeofP0);
     }
@@ -185,7 +185,7 @@ public:
             }
         }
         file_.close();
-        bloc1 = new Pair[block_size1 + 1];
+        bloc1 = new Pair1[block_size1 + 1];
     }
 
     void flush() {
@@ -206,11 +206,11 @@ public:
         delete[] bloc1;
     }
 
-    static void addNode(int index, Pair data) {
+    static void addNode(int index, Pair1 data) {
         int cursor = index / block_size1;
         int cur_size = NodeHead_for_name::getBlockSize(cursor);
         int insert_place;
-        Pair ret;
+        Pair1 ret;
 
         int l = 0, r = cur_size - 1, mid;
         while (l <= r) {
@@ -246,7 +246,7 @@ public:
     }
 
     void Insert(const std::string &name, const std::string &ISBN) {
-        Pair data;
+        Pair1 data;
         std::strcpy(data.key, name.c_str());
         data.key_len = static_cast<int>(name.size());
         std::strcpy(data.value, ISBN.c_str());
@@ -334,7 +334,7 @@ public:
     }
 
     void Delete(const std::string &name, const std::string &ISBN) {
-        Pair data;
+        Pair1 data;
         std::strcpy(data.key, name.c_str());
         data.key_len = static_cast<int>(name.size());
         std::strcpy(data.value, ISBN.c_str());
@@ -377,7 +377,7 @@ public:
                 Head.deleteHead(p);
             }
             else if (p != -1 && q != -1 && size + qsize - 1 < block_size1) {
-                Pair* tp = new Pair[size];
+                Pair1* tp = new Pair1[size];
                 for (int i = 0; i < size - 1; i++) {
                     tp[i] = bloc1[i];
                 }
@@ -401,7 +401,7 @@ public:
         int len = static_cast<int>(name.size());
         while (p != -1) {
             Body.visitNode(p * block_size1);
-            Pair head_ = bloc1[0], tail_ = bloc1[link1[p].size - 1];
+            Pair1 head_ = bloc1[0], tail_ = bloc1[link1[p].size - 1];
             if (string_cmp(tail_.key, index, tail_.key_len, len) == 0 &&
                 string_cmp(head_.key, index, head_.key_len, len) == 0) {
                 for (int i = 0; i < link1[p].size; i++) {
@@ -414,7 +414,7 @@ public:
                 int start_l = 0, end_l = 0, start_r = link1[p].size - 1, end_r = link1[p].size - 1, mid;
                 while (start_l <= start_r) {
                     mid = (start_l + start_r) / 2;
-                    Pair tmp = bloc1[mid];
+                    Pair1 tmp = bloc1[mid];
                     if (string_cmp(tmp.key, index, tmp.key_len, len) >= 0) {
                         start_r = mid - 1;
                     }
@@ -424,7 +424,7 @@ public:
                 }
                 while (end_l <= end_r) {
                     mid = (end_l + end_r) / 2;
-                    Pair tmp = bloc1[mid];
+                    Pair1 tmp = bloc1[mid];
                     if (string_cmp(tmp.key, index, tmp.key_len, len) == 1) {
                         end_r = mid - 1;
                     }
@@ -464,7 +464,7 @@ public:
         return 0;
     }
 
-    static int pair_cmp(Pair x, Pair y) {
+    static int pair_cmp(Pair1 x, Pair1 y) {
         if (string_cmp(x.key, y.key, x.key_len, y.key_len) == 1) {
             return 1;
         }

@@ -10,14 +10,14 @@ using std::ofstream;
 
 const int block_size2 = 128;
 
-struct Pair1 {
+struct Pair2 {
     char key[61];
     char value[21];
     int key_len;
     int value_len;
 };
 
-struct HeadNode3 {
+struct HeadNode2 {
     int id;
     int prev_head;
     int nex_head;
@@ -26,10 +26,10 @@ struct HeadNode3 {
 };
 
 
-extern Pair1* bloc2;
-extern HeadNode3 link2[100001];
+extern Pair2* bloc2;
+extern HeadNode2 link2[100001];
 
-const int sizeofP1 = sizeof(Pair1);
+const int sizeofP1 = sizeof(Pair2);
 const int sizeofH1 = 4 * sizeof(int);
 
 class NodeHead_for_author {
@@ -57,8 +57,8 @@ public:
         file.close();
     }
 
-    HeadNode3 visitHead(int index) {
-        HeadNode3 ret;
+    HeadNode2 visitHead(int index) {
+        HeadNode2 ret;
         file.seekp(index * sizeofH1);
         file.read(reinterpret_cast<char*>(&ret), sizeofH1);
         ret.cur_index = ret.id * block_size2;
@@ -69,14 +69,14 @@ public:
         return link2[index].size;
     }
 
-    void writeHead(int index, HeadNode3 ret) {
+    void writeHead(int index, HeadNode2 ret) {
         file.seekp(index * sizeofH1);
         file.write(reinterpret_cast<char*>(&ret), sizeofH1);
     }
 
     int addHead(int index) {
         new_id++;
-        HeadNode3 head_node{};
+        HeadNode2 head_node{};
         if (cur_size == 0) {
             head = new_id;
             head_node.id = new_id;
@@ -138,7 +138,7 @@ public:
 
     void visitNode(int index) {
         delete[] bloc2;
-        bloc2 = new Pair1[block_size2 + 1];
+        bloc2 = new Pair2[block_size2 + 1];
         file.seekp(index * sizeofP1);
         file.read(reinterpret_cast<char*>(bloc2), link2[index / block_size2].size * sizeofP1);
     }
@@ -186,7 +186,7 @@ public:
             }
         }
         file_.close();
-        bloc2 = new Pair1[block_size2 + 1];
+        bloc2 = new Pair2[block_size2 + 1];
     }
 
     void flush() {
@@ -207,11 +207,11 @@ public:
         delete[] bloc2;
     }
 
-    static void addNode(int index, Pair1 data) {
+    static void addNode(int index, Pair2 data) {
         int cursor = index / block_size2;
         int cur_size = NodeHead_for_author::getBlockSize(cursor);
         int insert_place;
-        Pair1 ret;
+        Pair2 ret;
 
         int l = 0, r = cur_size - 1, mid;
         while (l <= r) {
@@ -247,7 +247,7 @@ public:
     }
 
     void Insert(const std::string &name, const std::string &ISBN) {
-        Pair1 data;
+        Pair2 data;
         std::strcpy(data.key, name.c_str());
         data.key_len = static_cast<int>(name.size());
         std::strcpy(data.value, ISBN.c_str());
@@ -335,7 +335,7 @@ public:
     }
 
     void Delete(const std::string &name, const std::string &ISBN) {
-        Pair1 data;
+        Pair2 data;
         std::strcpy(data.key, name.c_str());
         data.key_len = static_cast<int>(name.size());
         std::strcpy(data.value, ISBN.c_str());
@@ -378,7 +378,7 @@ public:
                 Head.deleteHead(p);
             }
             else if (p != -1 && q != -1 && size + qsize - 1 < block_size2) {
-                Pair1* tp = new Pair1[size];
+                Pair2* tp = new Pair2[size];
                 for (int i = 0; i < size - 1; i++) {
                     tp[i] = bloc2[i];
                 }
@@ -402,7 +402,7 @@ public:
         int len = static_cast<int>(name.size());
         while (p != -1) {
             Body.visitNode(p * block_size2);
-            Pair1 head_ = bloc2[0], tail_ = bloc2[link2[p].size - 1];
+            Pair2 head_ = bloc2[0], tail_ = bloc2[link2[p].size - 1];
             if (string_cmp(tail_.key, index, tail_.key_len, len) == 0 &&
                 string_cmp(head_.key, index, head_.key_len, len) == 0) {
                 for (int i = 0; i < link2[p].size; i++) {
@@ -415,7 +415,7 @@ public:
                 int start_l = 0, end_l = 0, start_r = link2[p].size - 1, end_r = link2[p].size - 1, mid;
                 while (start_l <= start_r) {
                     mid = (start_l + start_r) / 2;
-                    Pair1 tmp = bloc2[mid];
+                    Pair2 tmp = bloc2[mid];
                     if (string_cmp(tmp.key, index, tmp.key_len, len) >= 0) {
                         start_r = mid - 1;
                     }
@@ -425,7 +425,7 @@ public:
                 }
                 while (end_l <= end_r) {
                     mid = (end_l + end_r) / 2;
-                    Pair1 tmp = bloc2[mid];
+                    Pair2 tmp = bloc2[mid];
                     if (string_cmp(tmp.key, index, tmp.key_len, len) == 1) {
                         end_r = mid - 1;
                     }
@@ -465,7 +465,7 @@ public:
         return 0;
     }
 
-    static int pair_cmp(Pair1 x, Pair1 y) {
+    static int pair_cmp(Pair2 x, Pair2 y) {
         if (string_cmp(x.key, y.key, x.key_len, y.key_len) == 1) {
             return 1;
         }

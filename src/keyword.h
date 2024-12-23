@@ -17,7 +17,7 @@ struct Pair3 {
     int value_len;
 };
 
-struct HeadNode2 {
+struct HeadNode3{
     int id;
     int prev_head;
     int nex_head;
@@ -26,7 +26,7 @@ struct HeadNode2 {
 };
 
 extern Pair3* bloc3;
-extern HeadNode2 link3[100001];
+extern HeadNode3 link3[100001];
 
 const int sizeofP3 = sizeof(Pair3);
 const int sizeofH3 = 4 * sizeof(int);
@@ -56,8 +56,8 @@ public:
         file.close();
     }
 
-    HeadNode2 visitHead(int index) {
-        HeadNode2 ret;
+    HeadNode3 visitHead(int index) {
+        HeadNode3 ret;
         file.seekp(index * sizeofH3);
         file.read(reinterpret_cast<char*>(&ret), sizeofH3);
         ret.cur_index = ret.id * block_size3;
@@ -68,14 +68,14 @@ public:
         return link3[index].size;
     }
 
-    void writeHead(int index, HeadNode2 ret) {
+    void writeHead(int index, HeadNode3 ret) {
         file.seekp(index * sizeofH3);
         file.write(reinterpret_cast<char*>(&ret), sizeofH3);
     }
 
     int addHead(int index) {
         new_id++;
-        HeadNode2 head_node{};
+        HeadNode3 head_node{};
         if (cur_size == 0) {
             head = new_id;
             head_node.id = new_id;
