@@ -43,7 +43,7 @@ void User_Operation::initialise() {
 
 void User_Operation::flush() {
     fstream file_;
-    file_.open("Host_for_books", std::ios::in|std::ios::out|std::ios::binary);
+    file_.open("Host_for_users", std::ios::in|std::ios::out|std::ios::binary);
     file_.seekp(0);
     file_.write(reinterpret_cast<char*>(&Head.new_id), sizeof(int));
     file_.write(reinterpret_cast<char*>(&Head.cur_size), sizeof(int));

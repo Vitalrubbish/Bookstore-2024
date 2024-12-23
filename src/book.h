@@ -3,15 +3,17 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <set>
 #include<algorithm>
 #include <cstring>
+#include "name.h"
+#include "author.h"
+#include "keyword.h"
 
 using std::string;
 using std::fstream;
 using std::ifstream;
 using std::ofstream;
-
-
 
 struct Book {
     char ISBN[21];
@@ -159,6 +161,9 @@ public:
 class Book_Operation {
     NodeHead_for_Books Head;
     NodeBody_for_Books Body;
+    name_operation name_op;
+    author_operation author_op;
+    keyword_operation keyword_op;
     Book current_Book;
     bool select = false;
 public:
@@ -193,6 +198,8 @@ public:
     double Buy(const std::string &, int);
 
     static std::vector<std::string> Key_Split(const std::string &);
+
+    static bool checkValidity(const std::string &);
 
     static int string_cmp(char*, char*, int, int);
 

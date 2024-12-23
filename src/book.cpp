@@ -195,6 +195,7 @@ void Book_Operation::Modify(int type, const std::string &info) {
         }
         Delete();
         std::strcpy(current_Book.ISBN, info.c_str());
+        current_Book.ISBN_len = static_cast<int>(info.size());
         Insert_(current_Book);
         return;
     }
@@ -211,15 +212,33 @@ void Book_Operation::Modify(int type, const std::string &info) {
                 int val = string_cmp(current_Book.ISBN, bloc_[mid].ISBN, current_Book.ISBN_len, bloc_[mid].ISBN_len);
                 if (val == 0) {
                     if (type == 2) {
+                        std::string BookName(bloc_[mid].BookName, bloc_[mid].BookName_len);
+                        name_op.Delete(BookName,current_Book.ISBN);
+                        name_op.Insert(info, current_Book.ISBN);
                         std::strcpy(bloc_[mid].BookName, info.c_str());
                         bloc_[mid].BookName_len = static_cast<int>(info.size());
                     }
                     if (type == 3) {
+                        std::string Author(bloc_[mid].Author, bloc_[mid].Author_len);
+                        author_op.Delete(Author,current_Book.ISBN);
+                        author_op.Insert(info, current_Book.ISBN);
                         std::strcpy(bloc_[mid].Author, info.c_str());
                         bloc_[mid].Author_len = static_cast<int>(info.size());
                     }
                     if (type == 4) {
-                        //todo: check the validity of info
+                        std::string original_keyword(current_Book.Keyword, current_Book.Keyword_len);
+                        std::vector<std::string> token = Key_Split(original_keyword);
+                        for (const auto & i : token) {
+                            keyword_op.Delete(i,current_Book.ISBN);
+                        }
+                        if (!checkValidity(info)) {
+                            std::cout << "Invalid" << '\n';
+                            return;
+                        }
+                        token = Key_Split(info);
+                        for (const auto & i : token) {
+                            keyword_op.Insert(i,current_Book.ISBN);
+                        }
                         std::strcpy(bloc_[mid].Keyword, info.c_str());
                         bloc_[mid].Keyword_len = static_cast<int>(info.size());
                     }
@@ -277,45 +296,13 @@ Book Book_Operation::getBook(const std::string &ISBN) {
 
 void Book_Operation::Show(int type, const std::string &info) {
     bool put = false;
-    int p = Head.head;
-    int size;
-    while (p != -1) {
-        size = link_[p].size;
-        Body.visitNode(p * block_size_);
-        for (int i = 0; i < size; i++) {
-            bool flag = false;
-            if (type == -1) {
-                flag = true;
-            }
-            if (type == 1) {
-                std::string info_(bloc_[i].ISBN, bloc_[i].ISBN_len);
-                if (info_ == info) {
-                    flag = true;
-                }
-            }
-            if (type == 2) {
-                std::string info_(bloc_[i].BookName, bloc_[i].BookName_len);
-                if (info_ == info) {
-                    flag = true;
-                }
-            }
-            if (type == 3) {
-                std::string info_(bloc_[i].Author, bloc_[i].Author_len);
-                if (info_ == info) {
-                    flag = true;
-                }
-            }
-            if (type == 4) {
-                std::string info_(bloc_[i].Keyword, bloc_[i].Keyword_len);
-                std::vector<std::string> KeyToken = Key_Split(info_);
-                for (int j = 0; j < KeyToken.size(); j++) {
-                    if (info == KeyToken[j]) {
-                        flag = true;
-                        break;
-                    }
-                }
-            }
-            if (flag) {
+    if (type == -1) {
+        int p = Head.head;
+        int size;
+        while (p != -1) {
+            size = link_[p].size;
+            Body.visitNode(p * block_size_);
+            for (int i = 0; i < size; i++) {
                 put = true;
                 std::string ISBN(bloc_[i].ISBN, bloc_[i].ISBN_len);
                 std::string BookName(bloc_[i].BookName, bloc_[i].BookName_len);
@@ -328,8 +315,78 @@ void Book_Operation::Show(int type, const std::string &info) {
                 printf("%.2f\t", bloc_[i].price);
                 std::cout << bloc_[i].Quantity << '\n';
             }
+            p = link_[p].nex_head;
         }
-        p = link_[p].nex_head;
+        if (!put) {
+            std::cout << '\n';
+        }
+    }
+    else if (type == 1) {
+        Book data;
+        std::strcpy(data.ISBN, info.c_str());
+        data.ISBN_len = static_cast<int>(info.size());
+        data.Quantity = -1;
+        int p = Head.head;
+        int size;
+        while (p != -1) {
+            size = link_[p].size;
+            Body.visitNode(p * block_size_);
+            if (string_cmp(data.ISBN, bloc_[0].ISBN, data.ISBN_len, bloc_[0].ISBN_len) != -1 &&
+                string_cmp(data.ISBN, bloc_[size - 1].ISBN, data.ISBN_len, bloc_[size - 1].ISBN_len) != 1) {
+                int l = 0, r = size - 1, mid;
+                while (l <= r) {
+                    mid = (l + r) / 2;
+                    int val = string_cmp(data.ISBN, bloc_[mid].ISBN, data.ISBN_len, bloc_[mid].ISBN_len);
+                    if (val == 0) {
+                        put = true;
+                        std::string ISBN(bloc_[mid].ISBN, bloc_[mid].ISBN_len);
+                        std::string BookName(bloc_[mid].BookName, bloc_[mid].BookName_len);
+                        std::string Author(bloc_[mid].Author, bloc_[mid].Author_len);
+                        std::string Keyword(bloc_[mid].Keyword, bloc_[mid].Keyword_len);
+                        std::cout << ISBN << '\t'
+                                  << BookName << '\t'
+                                  << Author << '\t'
+                                  << Keyword << '\t';
+                        printf("%.2f\t", bloc_[mid].price);
+                        std::cout << bloc_[mid].Quantity << '\n';
+                    }
+                    if (val == -1) {
+                        r = mid - 1;
+                    }
+                    else {
+                        l = mid + 1;
+                    }
+                }
+                break;
+                }
+            p = link_[p].nex_head;
+        }
+    }
+    else {
+        std::vector <std::string> S;
+        if (type == 2) {
+            S = name_op.Find(info);
+        }
+        if (type == 3) {
+            S = author_op.Find(info);
+        }
+        if (type == 4) {
+            S = keyword_op.Find(info);
+        }
+        for (const auto & i : S) {
+            Book tmp = getBook(i);
+            put = true;
+            std::string ISBN(tmp.ISBN, tmp.ISBN_len);
+            std::string BookName(tmp.BookName, tmp.BookName_len);
+            std::string Author(tmp.Author, tmp.Author_len);
+            std::string Keyword(tmp.Keyword, tmp.Keyword_len);
+            std::cout << ISBN << '\t'
+                      << BookName << '\t'
+                      << Author << '\t'
+                      << Keyword << '\t';
+            printf("%.2f\t", tmp.price);
+            std::cout << tmp.Quantity << '\n';
+        }
     }
     if (!put) {
         std::cout << '\n';
@@ -418,6 +475,17 @@ void Book_Operation::Insert(const std::string &ISBN) {
 }
 
 void Book_Operation::Insert_(Book data) {
+    std::string Name(current_Book.BookName, current_Book.BookName_len);
+    name_op.Insert(Name, current_Book.ISBN);
+    std::string Author(current_Book.Author, current_Book.Author_len);
+    author_op.Insert(Author, current_Book.ISBN);
+    std::string Keyword(current_Book.Keyword, current_Book.Keyword_len);
+    std::vector<std::string> token = Key_Split(Keyword);
+    for (const auto & i : token) {
+        keyword_op.Insert(i,current_Book.ISBN);
+    }
+
+
     int cur_size = Head.cur_size;
     if (cur_size == 0) {
         int id = Head.addHead(0);
@@ -496,6 +564,16 @@ void Book_Operation::Insert_(Book data) {
 }
 
 void Book_Operation::Delete() {
+    std::string Name(current_Book.BookName, current_Book.BookName_len);
+    name_op.Delete(Name, current_Book.ISBN);
+    std::string Author(current_Book.Author, current_Book.Author_len);
+    author_op.Delete(Author, current_Book.ISBN);
+    std::string Keyword(current_Book.Keyword, current_Book.Keyword_len);
+    std::vector<std::string> token = Key_Split(Keyword);
+    for (const auto & i : token) {
+        keyword_op.Delete(i,current_Book.ISBN);
+    }
+
     int p = Head.head;
     int size;
     while (p != -1) {
@@ -542,6 +620,31 @@ std::vector<std::string> Book_Operation::Key_Split(const std::string &str) {
     }
     ret.push_back(cur);
     return ret;
+}
+
+bool Book_Operation::checkValidity(const std::string &str) {
+    std::set<std::string> ret;
+    ret.clear();
+    int len = static_cast<int>(str.size());
+    int p = 0;
+    std::string cur;
+    while (p < len) {
+        if (str[p] == '|') {
+            if (ret.find(cur) != ret.end()) {
+                return false;
+            }
+            ret.insert(cur);
+            cur = "";
+        }
+        else {
+            cur += str[p];
+        }
+        p++;
+    }
+    if (ret.find(cur) != ret.end()) {
+        return false;
+    }
+    return true;
 }
 
 int Book_Operation::string_cmp(char* s1, char* s2, int len_1, int len_2) {
