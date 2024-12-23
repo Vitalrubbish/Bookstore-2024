@@ -237,10 +237,7 @@ int main() {
                 std::cout << "Invalid" << '\n';
                 continue;
             }
-            for (int i = 1; i < token.size(); i++) {
-                std::vector<std::string> inner_token = inner_Split(token[i]);
-                Book_op.Modify(getType(inner_token[0]), inner_token[1]);
-            }
+            Book_op.Modify(op);
         }
         else if (token[0] == "import") {
             if (User_op.current_User.privilege < 3) {

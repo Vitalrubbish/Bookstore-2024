@@ -182,7 +182,7 @@ public:
 
     void Select(const std::string &);
 
-    void Modify(int, const std::string &);
+    void Modify(const std::string &);
 
     Book getBook(const std::string &);
 
