@@ -26,6 +26,7 @@ struct Book {
     int Keyword_len;
     int Quantity = 0;
     double price = 0;
+    bool is_new = false;
 };
 
 struct HeadNode_ {
@@ -39,7 +40,7 @@ struct HeadNode_ {
 extern Book* bloc_;
 extern HeadNode_ link_[100001];
 
-const int block_size_ = 128;
+const int block_size_ = 300;
 const int sizeofP_ = sizeof(Book);
 const int sizeofH_ = 4 * sizeof(int);
 

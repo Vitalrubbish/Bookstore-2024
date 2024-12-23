@@ -8,7 +8,7 @@ using std::fstream;
 using std::ifstream;
 using std::ofstream;
 
-const int block_size2 = 128;
+const int block_size2 = 300;
 
 struct Pair2 {
     char key[61];

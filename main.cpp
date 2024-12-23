@@ -98,9 +98,9 @@ int getType(const std::string &str) {
 }
 
 int main() {
-    while (true) {
-        std::string op;
-        getline(std::cin, op);
+    std::string op;
+    //freopen("./bookstore-testcases/advanced/testcase1/1.in",  "r", stdin);
+    while (getline(std::cin, op)) {
         std::vector<std::string> token = Split(op);
         if (token.empty()) {
             continue;

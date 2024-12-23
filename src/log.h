@@ -31,7 +31,7 @@ struct HeadNode {
 extern User* bloc;
 extern HeadNode link[100001];
 
-const int block_size = 128;
+const int block_size = 300;
 const int sizeofP = sizeof(User);
 const int sizeofH = 4 * sizeof(int);
 
