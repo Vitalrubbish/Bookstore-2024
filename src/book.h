@@ -165,6 +165,7 @@ class Book_Operation {
     author_operation author_op;
     keyword_operation keyword_op;
     Book current_Book;
+    int current_index;
     bool select = false;
 public:
     Book_Operation();

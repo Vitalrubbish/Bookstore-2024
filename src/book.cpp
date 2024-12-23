@@ -501,13 +501,15 @@ void Book_Operation::Insert_(Book data) {
         nex_head = link_[p].nex_head;
         size = link_[p].size;
         Body.visitNode(p * block_size_);
-        if (string_cmp(bloc_[0].ISBN, data.ISBN, bloc_[0].ISBN_len, data.ISBN_len) == -1 &&
-            string_cmp (bloc_[size - 1].ISBN, data.ISBN, bloc_[size - 1].ISBN_len, data.ISBN_len) == 1) {
-            insert_type = 1;
-            break;
+        if (size > 0) {
+            if (string_cmp(bloc_[0].ISBN, data.ISBN, bloc_[0].ISBN_len, data.ISBN_len) == -1 &&
+                string_cmp (bloc_[size - 1].ISBN, data.ISBN, bloc_[size - 1].ISBN_len, data.ISBN_len) == 1) {
+                insert_type = 1;
+                break;
+                }
+            if (string_cmp(bloc_[0].ISBN, data.ISBN, bloc_[0].ISBN_len, data.ISBN_len) != -1) {
+                break;
             }
-        if (string_cmp(bloc_[0].ISBN, data.ISBN, bloc_[0].ISBN_len, data.ISBN_len) != -1) {
-            break;
         }
         q = p;
         p = nex_head;
