@@ -5,7 +5,10 @@
 #include "book.h"
 #include "diary.h"
 #include "finance.h"
-
+#define DEBUG
+#ifdef DEBUG
+int count = 0;
+#endif
 Finance Money ("finance");
 User_Operation User_op;
 Book_Operation Book_op;
@@ -72,6 +75,9 @@ int stringToInt(const std::string &str) {
     int p = 0;
     int ans = 0;
     while (p < len) {
+        if (str[p] < '0' || str[p] > '9') {
+            return -1;
+        }
         ans = ans * 10 + str[p] - '0';
         p++;
     }
@@ -99,7 +105,7 @@ int getType(const std::string &str) {
 
 int main() {
     std::string op;
-    //freopen("./bookstore-testcases/advanced/testcase1/1.in",  "r", stdin);
+
     while (getline(std::cin, op)) {
         std::vector<std::string> token = Split(op);
         if (token.empty()) {
@@ -241,6 +247,10 @@ int main() {
         }
         else if (token[0] == "import") {
             if (User_op.current_User.privilege < 3) {
+                std::cout << "Invalid" << '\n';
+                continue;
+            }
+            if (stringToInt(token[1]) == -1) {
                 std::cout << "Invalid" << '\n';
                 continue;
             }

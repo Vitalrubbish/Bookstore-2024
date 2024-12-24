@@ -167,8 +167,10 @@ class Book_Operation {
     keyword_operation keyword_op;
     Book current_Book;
     int current_index;
-    bool select = false;
 public:
+
+    std::vector<Book> book_stack;
+
     Book_Operation();
 
     ~Book_Operation();
@@ -207,5 +209,7 @@ public:
 
     static double stringToDouble(const std::string &);
 };
+
+extern Book_Operation Book_op;
 
 #endif //BOOK_H

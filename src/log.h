@@ -5,6 +5,7 @@
 #include <string>
 #include <cstring>
 #include <vector>
+#include "book.h"
 
 using std::string;
 using std::fstream;

@@ -121,6 +121,9 @@ void User_Operation::Login(const std::string &UserID, const std::string &Passwor
                         bloc[mid].login = true;
                         current_User = bloc[mid];
                         login_stack.push_back(bloc[mid]);
+                        Book init{};
+                        init.Quantity = -1;
+                        Book_op.book_stack.push_back(init);
                         Body.writeNode(p * block_size);
                     }
                     else {
@@ -157,6 +160,7 @@ void User_Operation::Logout() {
                     if (val == 0) {
                         bloc[mid].login = false;
                         login_stack.pop_back();
+                        Book_op.book_stack.pop_back();
                         current_User = login_stack[login_stack.size() - 1];
                         Body.writeNode(p * block_size);
                         return;

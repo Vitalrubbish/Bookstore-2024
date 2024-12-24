@@ -9,7 +9,6 @@ int getType(const std::string &str);
 Book_Operation::Book_Operation():
     Head("NodeHead_for_books"),
     Body("NodeBody_for_books") {
-    select = false;
     initialise();
 }
 
@@ -110,13 +109,11 @@ void Book_Operation::Select(const std::string &ISBN) {
         ret = getBook(ISBN);
     }
     current_Book = ret;
-    select = true;
+    book_stack.pop_back();
+    book_stack.push_back(ret);
 }
 
 double Book_Operation::Buy(const std::string &ISBN, int Quantity) {
-    if (!select) {
-        return 0;
-    }
     Book data;
     std::strcpy(data.ISBN, ISBN.c_str());
     data.ISBN_len = static_cast<int>(ISBN.size());
@@ -155,8 +152,8 @@ double Book_Operation::Buy(const std::string &ISBN, int Quantity) {
 }
 
 bool Book_Operation::Import(int Quantity) {
-    if (!select) {
-        std::cout << "Invalid" << '\n';
+    if (book_stack[book_stack.size() - 1].Quantity == -1) {
+        std::cout << "Invalid\n";
         return false;
     }
     int p = Head.head;
@@ -190,7 +187,7 @@ bool Book_Operation::Import(int Quantity) {
 }
 
 void Book_Operation::Modify(const std::string &str) {
-    if (!select) {
+    if (book_stack[book_stack.size() - 1].Quantity == -1) {
         std::cout << "Invalid" << '\n';
         return;
     }
@@ -426,6 +423,11 @@ void Book_Operation::Show(int type, const std::string &info) {
             S = author_op.Find(info);
         }
         if (type == 4) {
+            std::vector<std::string> keys = Key_Split(info);
+            if (keys.size() > 1) {
+                std::cout << "Invalid\n";
+                return;
+            }
             S = keyword_op.Find(info);
         }
         for (const auto & i : S) {
@@ -453,6 +455,7 @@ void Book_Operation::Insert(const std::string &ISBN) {
     std::strcpy(data.ISBN, ISBN.c_str());
     data.ISBN_len = static_cast<int>(ISBN.size());
     data.is_new = true;
+    data.Quantity = 0;
     int cur_size = Head.cur_size;
     if (cur_size == 0) {
         int id = Head.addHead(0);
