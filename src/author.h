@@ -396,6 +396,7 @@ public:
 
     std::vector<std::string> Find(const std::string &name) {
         std::vector<std::string> ret;
+        ret.clear();
         int p = Head.head;
         char index[61];
         std::strcpy(index, name.c_str());

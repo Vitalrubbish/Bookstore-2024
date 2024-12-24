@@ -130,7 +130,7 @@ double Book_Operation::Buy(const std::string &ISBN, int Quantity) {
                 int val = string_cmp(data.ISBN, bloc_[mid].ISBN, data.ISBN_len, bloc_[mid].ISBN_len);
                 if (val == 0) {
                     if (bloc_[mid].Quantity < Quantity) {
-                        return 0;
+                        return -1;
                     }
                     bloc_[mid].Quantity -= Quantity;
                     printf("%.2f\n", bloc_[mid].price * Quantity);
@@ -148,7 +148,7 @@ double Book_Operation::Buy(const std::string &ISBN, int Quantity) {
             }
         p = link_[p].nex_head;
     }
-    return 0;
+    return -1;
 }
 
 bool Book_Operation::Import(int Quantity) {
@@ -216,6 +216,7 @@ void Book_Operation::Modify(const std::string &str) {
     }
     if (ISBN_modify) {
         Delete();
+        std::string prev_ISBN(current_Book.ISBN, current_Book.ISBN_len);
         for (int i = 0; i < token.size() - 1; i++) {
             int type = getType(inner_token[i * 2]);
             if (type == 1) {
@@ -236,6 +237,12 @@ void Book_Operation::Modify(const std::string &str) {
             }
             else if (type == 5) {
                 current_Book.price = stringToDouble(inner_token[i * 2 + 1]);
+            }
+        }
+        for (int i = 0; i < book_stack.size(); i++) {
+            std::string cur_ISBN(book_stack[i].ISBN, book_stack[i].ISBN_len);
+            if (cur_ISBN == prev_ISBN) {
+                book_stack[i] = current_Book;
             }
         }
         Insert_(current_Book);
@@ -279,7 +286,7 @@ void Book_Operation::Modify(const std::string &str) {
                             std::vector<std::string> tok;
                             if (!bloc_[mid].is_new) {
                                 std::string original_keyword(current_Book.Keyword, current_Book.Keyword_len);
-                                std::vector<std::string> tok = Key_Split(original_keyword);
+                                tok = Key_Split(original_keyword);
                                 for (const auto & key : tok) {
                                     keyword_op.Delete(key,current_Book.ISBN);
                                 }
@@ -298,6 +305,14 @@ void Book_Operation::Modify(const std::string &str) {
                     }
                     bloc_[mid].is_new = false;
                     Body.writeNode(p * block_size_);
+                    current_Book = bloc_[mid];
+                    std::string ISBN(current_Book.ISBN, current_Book.ISBN_len);
+                    for (int i = 0; i < book_stack.size(); i++) {
+                        std::string cur_ISBN(book_stack[i].ISBN, book_stack[i].ISBN_len);
+                        if (cur_ISBN == ISBN) {
+                            book_stack[i] = current_Book;
+                        }
+                    }
                     return;
                 }
                 if (val == -1) {
@@ -374,7 +389,7 @@ void Book_Operation::Show(int type, const std::string &info) {
         }
         return;
     }
-    else if (type == 1) {
+    if (type == 1) {
         Book data;
         std::strcpy(data.ISBN, info.c_str());
         data.ISBN_len = static_cast<int>(info.size());
@@ -457,6 +472,7 @@ void Book_Operation::Insert(const std::string &ISBN) {
     data.ISBN_len = static_cast<int>(ISBN.size());
     data.is_new = true;
     data.Quantity = 0;
+    data.BookName_len = data.Author_len = data.Keyword_len = 0;
     int cur_size = Head.cur_size;
     if (cur_size == 0) {
         int id = Head.addHead(0);

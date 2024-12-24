@@ -113,7 +113,6 @@ int main() {
         }
         //todo: judge the permission to do current operation.
         if (token[0] == "quit" || token[0] == "exit") {
-            User_op.Quit();
             break;
         }
         if (token[0] == "su") {
@@ -225,7 +224,7 @@ int main() {
                 continue;
             }
             double cost = Book_op.Buy(token[1], stringToInt(token[2]));
-            if (cost == 0) {
+            if (cost < 0) {
                 std::cout << "Invalid" << '\n';
                 continue;
             }

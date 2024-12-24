@@ -18,7 +18,7 @@ using std::ofstream;
 struct Book {
     char ISBN[21];
     char BookName[31];
-    char Author[31];
+    char Author[61];
     char Keyword[61];
     int ISBN_len = 0;
     int BookName_len = 0;
@@ -165,11 +165,10 @@ class Book_Operation {
     name_operation name_op;
     author_operation author_op;
     keyword_operation keyword_op;
-    Book current_Book;
-    int current_index;
 public:
 
     std::vector<Book> book_stack;
+    Book current_Book;
 
     Book_Operation();
 
