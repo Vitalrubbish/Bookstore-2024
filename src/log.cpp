@@ -166,7 +166,9 @@ void User_Operation::Logout() {
                         login_stack.pop_back();
                         Book_op.book_stack.pop_back();
                         current_User = login_stack[login_stack.size() - 1];
-                        Book_op.current_Book = Book_op.book_stack[Book_op.book_stack.size() - 1];
+                        if (Book_op.book_stack.size() > 0) {
+                            Book_op.current_Book = Book_op.book_stack[Book_op.book_stack.size() - 1];
+                        }
                         Body.writeNode(p * block_size);
                         return;
                     }
