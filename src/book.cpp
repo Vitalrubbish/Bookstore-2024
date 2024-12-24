@@ -208,7 +208,7 @@ void Book_Operation::Modify(const std::string &str) {
             break;
         }
         if (getType(tmp[0]) == 4) {
-            if (!checkValidity(tmp[0])) {
+            if (!checkValidity(tmp[1])) {
                 std::cout << "Invalid" << '\n';
                 return;
             }
@@ -372,6 +372,7 @@ void Book_Operation::Show(int type, const std::string &info) {
         if (!put) {
             std::cout << '\n';
         }
+        return;
     }
     else if (type == 1) {
         Book data;
