@@ -118,10 +118,10 @@ void User_Operation::Login(const std::string &UserID, const std::string &Passwor
                 int val = string_cmp(data.UserID, bloc[mid].UserID, data.UserID_len, bloc[mid].UserID_len);
                 if (val == 0) {
                     std::string Password(bloc[mid].Password, bloc[mid].Password_len);
-                    if (Password == Password_input || current_User.privilege > bloc[mid].privilege) {
+                    if (Password == Password_input || Password_input.empty() && current_User.privilege > bloc[mid].privilege) {
                         bloc[mid].login = true;
                         current_User = bloc[mid];
-                        if (Book_op.book_stack.size() > 0) {
+                        if (!Book_op.book_stack.empty()) {
                             Book_op.book_stack[Book_op.book_stack.size() - 1] = Book_op.current_Book;
                         }
                         login_stack.push_back(bloc[mid]);
@@ -199,6 +199,16 @@ void User_Operation::Insert(const std::string &UserID,
                             const std::string &Password,
                             const std::string &UserName,
                             int privilege = 1) {
+    if (UserName.size() > 30) {
+        std::cout << "Invalid" << '\n';
+        return;
+    }
+    for (int i = 0; i < UserName.size(); i++) {
+        if (UserName[i] < 32 || UserName[i] > 126) {
+            std::cout << "Invalid" << '\n';
+            return;
+        }
+    }
     if (!checkValidity(UserID) || !checkValidity(Password)) {
         std::cout << "Invalid" << '\n';
         return;
@@ -413,7 +423,7 @@ void User_Operation::changePassword(const std::string &UserID,
                 int val = string_cmp(data.UserID, bloc[mid].UserID, data.UserID_len, bloc[mid].UserID_len);
                 if (val == 0) {
                     std::string Password(bloc[mid].Password, bloc[mid].Password_len);
-                    if (Password == current_Password || current_User.privilege == 7) {
+                    if (Password == current_Password || Password.empty() && current_User.privilege == 7) {
                         bloc[mid].Password_len = static_cast<int>(new_Password.size());
                         std::strcpy(bloc[mid].Password, new_Password.c_str());
                         Body.writeNode(p * block_size);
@@ -439,6 +449,9 @@ void User_Operation::changePassword(const std::string &UserID,
 
 bool User_Operation::checkValidity(const std::string &str) {
     int len = static_cast<int>(str.size());
+    if (str.size() > 30) {
+        return false;
+    }
     for (int i = 0; i < len; i++) {
         if (!(str[i] >= '0' && str[i] <= '9' || str[i] >= 'a' && str[i] <= 'z' ||
             str[i] >= 'A' && str[i] <= 'Z' || str[i] == '_')) {

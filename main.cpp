@@ -160,15 +160,22 @@ int main() {
                 std::cout << "Invalid" << '\n';
                 continue;
             }
-            int privilege = 0;
-            if (token[3] == "1") {
+            int privilege;
+            if (token[3] == "0") {
+                privilege = 0;
+            }
+            else if (token[3] == "1") {
                 privilege = 1;
             }
-            if (token[3] == "3") {
+            else if (token[3] == "3") {
                 privilege = 3;
             }
-            if (token[3] == "7") {
+            else if (token[3] == "7") {
                 privilege = 7;
+            }
+            else {
+                std::cout << "Invalid\n";
+                continue;
             }
             if (User_op.current_User.privilege <= privilege) {
                 std::cout << "Invalid" << '\n';
