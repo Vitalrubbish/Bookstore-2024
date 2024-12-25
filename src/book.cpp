@@ -195,11 +195,28 @@ void Book_Operation::Modify(const std::string &str) {
     std::vector<std::string> token = Split(str);
     std::vector<std::string> inner_token;
     inner_token.clear();
-    for (int i = 1; i < token.size(); i++) {
+    int sz = static_cast<int>(token.size());
+    for (int i = 1; i < sz; i++) {
         std::vector<std::string> tmp = inner_Split(token[i]);
         inner_token.push_back(tmp[0]);
         inner_token.push_back(tmp[1]);
+        if (tmp[1].empty()) {
+            if (tmp[1].size() > 20) {
+                std::cout << "Invalid\n";
+                return;
+            }
+        }
         if (getType(tmp[0]) == 1) {
+            if (tmp[1].size() > 20) {
+                std::cout << "Invalid\n";
+                return;
+            }
+            for (int j = 0; j < tmp[1].size(); j++) {
+                if (tmp[1][j] < 32 || tmp[1][j] > 126) {
+                    std::cout << "Invalid\n";
+                    return;
+                }
+            }
             if (getBook(tmp[1]).Quantity != -1) {
                 std::cout << "Invalid" << '\n';
                 return;
@@ -208,8 +225,36 @@ void Book_Operation::Modify(const std::string &str) {
             break;
         }
         if (getType(tmp[0]) == 4) {
+            if (tmp[1].size() > 60) {
+                std::cout << "Invalid\n";
+                return;
+            }
+            for (int j = 0; j < tmp[1].size(); j++) {
+                if (tmp[1][j] < 32 || tmp[1][j] > 126 || tmp[1][j] == '\"') {
+                    std::cout << "Invalid\n";
+                    return;
+                }
+            }
             if (!checkValidity(tmp[1])) {
                 std::cout << "Invalid" << '\n';
+                return;
+            }
+        }
+        if (getType(tmp[0]) == 2 || getType(tmp[0]) == 3) {
+            if (tmp[1].size() > 60) {
+                std::cout << "Invalid\n";
+                return;
+            }
+            for (int j = 0; j < tmp[1].size(); j++) {
+                if (tmp[1][j] < 32 || tmp[1][j] > 126 || tmp[1][j] == '\"') {
+                    std::cout << "Invalid\n";
+                    return;
+                }
+            }
+        }
+        if (getType(tmp[0]) == 5) {
+            if (stringToDouble(tmp[1]) < 0) {
+                std::cout << "Invalid\n";
                 return;
             }
         }
@@ -467,6 +512,16 @@ void Book_Operation::Show(int type, const std::string &info) {
 }
 
 void Book_Operation::Insert(const std::string &ISBN) {
+    if (ISBN.size() > 20) {
+        std::cout << "Invalid\n";
+        return;
+    }
+    for (int i = 0; i < ISBN.size(); i++) {
+        if (ISBN[i] < 32 || ISBN[i] > 126) {
+            std::cout << "Invalid\n";
+            return;
+        }
+    }
     Book data;
     std::strcpy(data.ISBN, ISBN.c_str());
     data.ISBN_len = static_cast<int>(ISBN.size());
@@ -708,6 +763,9 @@ bool Book_Operation::checkValidity(const std::string &str) {
     std::string cur;
     while (p < len) {
         if (str[p] == '|') {
+            if (cur.empty()) {
+                return false;
+            }
             if (ret.find(cur) != ret.end()) {
                 return false;
             }
@@ -749,14 +807,20 @@ double Book_Operation::stringToDouble(const std::string &str) {
     int len = static_cast<int>(str.size());
     int p = 0;
     while (str[p] != '.' && p < len) {
+        if (str[p] < '0' || str[p] > '9') {
+            return -1;
+        }
         ret = ret * 10 + str[p] - '0';
         p++;
     }
     p++;
+    if (str[p - 1] == '.' && p == len) {
+        return -1;
+    }
     if (len == p + 1) {
         ret = ret + (str[p] - '0') * 0.1;
     }
-    if (len == p + 2) {
+    if (len >= p + 2) {
         ret = ret + (str[p] - '0') * 0.1 + (str[p + 1] - '0') * 0.01;
     }
     return ret;

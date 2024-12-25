@@ -423,7 +423,7 @@ void User_Operation::changePassword(const std::string &UserID,
                 int val = string_cmp(data.UserID, bloc[mid].UserID, data.UserID_len, bloc[mid].UserID_len);
                 if (val == 0) {
                     std::string Password(bloc[mid].Password, bloc[mid].Password_len);
-                    if (Password == current_Password || Password.empty() && current_User.privilege == 7) {
+                    if (Password == current_Password || current_Password.empty() && current_User.privilege == 7) {
                         bloc[mid].Password_len = static_cast<int>(new_Password.size());
                         std::strcpy(bloc[mid].Password, new_Password.c_str());
                         Body.writeNode(p * block_size);
