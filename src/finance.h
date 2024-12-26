@@ -29,6 +29,10 @@ public:
     }
 
      void readFinance(int count) {
+        if (count == 0) {
+            std::cout << "\n";
+            return;
+        }
         file.seekp(0, file.end);
         int end = file.tellp();
         if (count > 0 && end < count * sizeof(Record)) {
@@ -42,13 +46,13 @@ public:
             count = end / sizeof(Record);
             file.seekp(0);
         }
+        double finance_in = 0, finance_out = 0;
         if (count == 0) {
-            std::cout << "\n";
+            printf("+ %.2f - %.2f\n",finance_in, finance_out);
             return;
         }
         record = new Record[count];
         file.read(reinterpret_cast<char*> (record), count * sizeof(Record));
-        double finance_in = 0, finance_out = 0;
         for (int i = 0; i < count; i++) {
             if (record[i].type == 1) {
                 finance_in += record[i].amount;

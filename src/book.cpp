@@ -198,6 +198,10 @@ void Book_Operation::Modify(const std::string &str) {
     int sz = static_cast<int>(token.size());
     for (int i = 1; i < sz; i++) {
         std::vector<std::string> tmp = inner_Split(token[i]);
+        if (tmp.size() < 2) {
+            std::cout << "Invalid\n";
+            return;
+        }
         inner_token.push_back(tmp[0]);
         inner_token.push_back(tmp[1]);
         if (tmp[1].empty()) {

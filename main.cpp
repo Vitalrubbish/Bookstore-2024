@@ -53,19 +53,75 @@ std::vector<std::string> inner_Split(const std::string &original) {
     std::vector<std::string> token;
     token.clear();
     int len = static_cast<int>(original.size());
+    if (original[0] != '-') {
+        return token;
+    }
     int p = 1, cur;
-    while (original[p] != '=') {
+    while (original[p] != '=' && p < len) {
         p++;
     }
-    token.push_back(original.substr(1, p - 1));
-    while (original[p] == '=' || original[p] == '\"') {
-        p++;
+    if (p == len) {
+        return token;
     }
-    cur = p;
-    while (p < len && original[p] != '\"') {
+    std::string tp = original.substr(1, p - 1);
+    token.push_back(tp);
+    if (tp == "ISBN") {
         p++;
+        cur = p;
+        p = len;
+        token.push_back(original.substr(cur, p - cur));
     }
-    token.push_back(original.substr(cur, p - cur));
+    if (tp == "name") {
+        p++;
+        if (original[p] != '\"') {
+            return token;
+        }
+        p++;
+        cur = p;
+        while (p < len && original[p] != '\"') {
+            p++;
+        }
+        if (p == len) {
+            return token;
+        }
+        token.push_back(original.substr(cur, p - cur));
+    }
+    if (tp == "author") {
+        p++;
+        if (original[p] != '\"') {
+            return token;
+        }
+        p++;
+        cur = p;
+        while (p < len && original[p] != '\"') {
+            p++;
+        }
+        if (p == len) {
+            return token;
+        }
+        token.push_back(original.substr(cur, p - cur));
+    }
+    if (tp == "keyword") {
+        p++;
+        if (original[p] != '\"') {
+            return token;
+        }
+        p++;
+        cur = p;
+        while (p < len && original[p] != '\"') {
+            p++;
+        }
+        if (p == len) {
+            return token;
+        }
+        token.push_back(original.substr(cur, p - cur));
+    }
+    if (tp == "price") {
+        p++;
+        cur = p;
+        p = len;
+        token.push_back(original.substr(cur, p - cur));
+    }
     return token;
 }
 
@@ -220,6 +276,10 @@ int main() {
             }
             if (token.size() == 2) {
                 std::vector<std::string> inner_token = inner_Split(token[1]);
+                if (inner_token.size() < 2) {
+                    std::cout << "Invalid" << '\n';
+                    continue;
+                }
                 Book_op.Show(getType(inner_token[0]), inner_token[1]);
                 continue;
             }
