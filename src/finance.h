@@ -42,6 +42,10 @@ public:
             count = end / sizeof(Record);
             file.seekp(0);
         }
+        if (count == 0) {
+            std::cout << "\n";
+            return;
+        }
         record = new Record[count];
         file.read(reinterpret_cast<char*> (record), count * sizeof(Record));
         double finance_in = 0, finance_out = 0;

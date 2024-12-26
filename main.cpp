@@ -200,6 +200,10 @@ int main() {
                 continue;
             }
             if (token.size() == 3) {
+                if (stringToInt(token[2]) == -1) {
+                    std::cout << "Invalid" << '\n';
+                    continue;
+                }
                 Money.readFinance(stringToInt(token[2]));
                 continue;
             }
