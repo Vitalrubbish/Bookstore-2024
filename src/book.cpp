@@ -196,6 +196,7 @@ void Book_Operation::Modify(const std::string &str) {
     std::vector<std::string> inner_token;
     inner_token.clear();
     int sz = static_cast<int>(token.size());
+    bool flag[6] = {false, false, false, false, false, false};
     for (int i = 1; i < sz; i++) {
         std::vector<std::string> tmp = inner_Split(token[i]);
         if (tmp.size() < 2) {
@@ -205,10 +206,12 @@ void Book_Operation::Modify(const std::string &str) {
         inner_token.push_back(tmp[0]);
         inner_token.push_back(tmp[1]);
         if (tmp[1].empty()) {
-            if (tmp[1].size() > 20) {
-                std::cout << "Invalid\n";
-                return;
-            }
+            std::cout << "Invalid\n";
+            return;
+        }
+        if (flag[getType(tmp[0])]) {
+            std::cout << "Invalid\n";
+            return;
         }
         if (getType(tmp[0]) == 1) {
             if (tmp[1].size() > 20) {
@@ -230,7 +233,6 @@ void Book_Operation::Modify(const std::string &str) {
                 return;
             }
             ISBN_modify = true;
-            break;
         }
         if (getType(tmp[0]) == 4) {
             if (tmp[1].size() > 60) {
@@ -270,6 +272,7 @@ void Book_Operation::Modify(const std::string &str) {
                 return;
             }
         }
+        flag[getType(tmp[0])] = true;
     }
     if (ISBN_modify) {
         Delete();

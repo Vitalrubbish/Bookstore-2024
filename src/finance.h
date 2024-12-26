@@ -51,18 +51,20 @@ public:
             printf("+ %.2f - %.2f\n",finance_in, finance_out);
             return;
         }
-        record = new Record[count];
-        file.read(reinterpret_cast<char*> (record), count * sizeof(Record));
-        for (int i = 0; i < count; i++) {
-            if (record[i].type == 1) {
-                finance_in += record[i].amount;
+        if (count > 0) {
+            record = new Record[count];
+            file.read(reinterpret_cast<char*> (record), count * sizeof(Record));
+            for (int i = 0; i < count; i++) {
+                if (record[i].type == 1) {
+                    finance_in += record[i].amount;
+                }
+                if (record[i].type == 2) {
+                    finance_out += record[i].amount;
+                }
             }
-            if (record[i].type == 2) {
-                finance_out += record[i].amount;
-            }
+            printf("+ %.2f - %.2f\n",finance_in, finance_out);
+            delete[] record;
         }
-        printf("+ %.2f - %.2f\n",finance_in, finance_out);
-        delete[] record;
     }
 
     void writeFinance(int type, double finance) {
