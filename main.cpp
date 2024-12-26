@@ -279,7 +279,7 @@ int main() {
             }
             if (token.size() == 2) {
                 std::vector<std::string> inner_token = inner_Split(token[1]);
-                if (inner_token.size() < 2) {
+                if (inner_token.size() < 2 || getType(inner_token[0]) == 0) {
                     std::cout << "Invalid" << '\n';
                     continue;
                 }

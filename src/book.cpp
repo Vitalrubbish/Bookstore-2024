@@ -213,6 +213,10 @@ void Book_Operation::Modify(const std::string &str) {
             std::cout << "Invalid\n";
             return;
         }
+        if (getType(tmp[0]) == 0) {
+            std::cout << "Invalid\n";
+            return;
+        }
         if (getType(tmp[0]) == 1) {
             if (tmp[1].size() > 20) {
                 std::cout << "Invalid\n";
