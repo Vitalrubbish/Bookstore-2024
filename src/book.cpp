@@ -41,7 +41,7 @@ void Book_Operation::initialise() {
         }
     }
     file_.close();
-    bloc_ = new Book[block_size_ + 1];
+    bloc_ = new Book[block_size_ + 3];
 }
 
 void Book_Operation::flush() {

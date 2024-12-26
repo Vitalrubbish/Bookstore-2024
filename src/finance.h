@@ -22,6 +22,7 @@ public:
             file.close();
             file.open(file_name, std::ios::in | std::ios::out);
         }
+        record = nullptr;
     }
 
     ~Finance() {
@@ -52,7 +53,7 @@ public:
             return;
         }
         if (count > 0) {
-            record = new Record[count];
+            record = new Record[count + 3];
             file.read(reinterpret_cast<char*> (record), count * sizeof(Record));
             for (int i = 0; i < count; i++) {
                 if (record[i].type == 1) {

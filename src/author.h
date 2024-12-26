@@ -137,8 +137,6 @@ public:
     }
 
     void visitNode(int index) {
-        delete[] bloc2;
-        bloc2 = new Pair2[block_size2 + 1];
         file.seekp(index * sizeofP1);
         file.read(reinterpret_cast<char*>(bloc2), link2[index / block_size2].size * sizeofP1);
     }
@@ -186,7 +184,7 @@ public:
             }
         }
         file_.close();
-        bloc2 = new Pair2[block_size2 + 1];
+        bloc2 = new Pair2[block_size2 + 3];
     }
 
     void flush() {

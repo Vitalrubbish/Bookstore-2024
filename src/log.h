@@ -47,7 +47,7 @@ public:
 
     NodeHead_for_Users() = default;
 
-    NodeHead_for_Users(const std::string &file_name) {
+    explicit NodeHead_for_Users(const std::string &file_name) {
         this -> file_name = file_name;
         file.open(file_name, std::ios::in|std::ios::out|std::ios::binary);
         if (!file.is_open()) {
@@ -62,7 +62,7 @@ public:
     }
 
     HeadNode visitHead(int index) {
-        HeadNode ret;
+        HeadNode ret{};
         file.seekp(index * sizeofH);
         file.read(reinterpret_cast<char*>(&ret), sizeofH);
         ret.cur_index = ret.id * block_size;
@@ -76,7 +76,7 @@ public:
 
     int addHead(int index) {
         new_id++;
-        HeadNode head_node;
+        HeadNode head_node{};
         if (cur_size == 0) {
             head = new_id;
             head_node.id = new_id;

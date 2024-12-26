@@ -5,10 +5,6 @@
 #include "book.h"
 #include "diary.h"
 #include "finance.h"
-#define DEBUG
-#ifdef DEBUG
-int count = 0;
-#endif
 Finance Money ("finance");
 User_Operation User_op;
 Book_Operation Book_op;

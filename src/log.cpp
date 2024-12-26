@@ -15,7 +15,7 @@ User_Operation::~User_Operation(){
 
 void User_Operation::initialise() {
     fstream file_;
-    bloc = new User[block_size + 1];
+    bloc = new User[block_size + 3];
     file_.open("Host_for_users", std::ios::in|std::ios::out);
     if (!file_.is_open()) {
         file_.open("Host_for_users", std::ios::out);
