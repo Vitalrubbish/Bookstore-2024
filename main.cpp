@@ -129,7 +129,7 @@ int stringToInt(const std::string &str) {
     //todo: judge whether str is a integer.
     int len = static_cast<int>(str.size());
     int p = 0;
-    int ans = 0;
+    long long ans = 0;
     while (p < len) {
         if (str[p] < '0' || str[p] > '9') {
             return -1;
@@ -137,7 +137,10 @@ int stringToInt(const std::string &str) {
         ans = ans * 10 + str[p] - '0';
         p++;
     }
-    return ans;
+    if (ans > 2147483647) {
+        return -1;
+    }
+    return static_cast<int>(ans);
 }
 
 int getType(const std::string &str) {
@@ -290,7 +293,7 @@ int main() {
                 std::cout << "Invalid" << '\n';
                 continue;
             }
-            if (stringToInt(token[2]) <= 0) {
+            if (stringToInt(token[2]) <= 0 || token[2].size() > 10) {
                 std::cout << "Invalid" << '\n';
                 continue;
             }
@@ -320,7 +323,11 @@ int main() {
                 std::cout << "Invalid" << '\n';
                 continue;
             }
-            if (stringToInt(token[1]) < 1e-9) {
+            if (token.size() != 3) {
+                std::cout << "Invalid" << '\n';
+                continue;
+            }
+            if (stringToInt(token[1]) < 1e-9 || token[1].size() > 10) {
                 std::cout << "Invalid" << '\n';
                 continue;
             }

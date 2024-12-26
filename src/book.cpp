@@ -261,6 +261,10 @@ void Book_Operation::Modify(const std::string &str) {
             }
         }
         if (getType(tmp[0]) == 5) {
+            if (tmp[1].size() > 13) {
+                std::cout << "Invalid\n";
+                return;
+            }
             if (stringToDouble(tmp[1]) < 0) {
                 std::cout << "Invalid\n";
                 return;
@@ -821,15 +825,23 @@ double Book_Operation::stringToDouble(const std::string &str) {
         ret = ret * 10 + str[p] - '0';
         p++;
     }
-    p++;
-    if (str[p - 1] == '.' && p == len) {
+    if (p == 0) {
         return -1;
     }
-    if (len == p + 1) {
-        ret = ret + (str[p] - '0') * 0.1;
-    }
-    if (len >= p + 2) {
-        ret = ret + (str[p] - '0') * 0.1 + (str[p + 1] - '0') * 0.01;
+    if (str[p] == '.') {
+        p++;
+        if (p == len) {
+            return -1;
+        }
+        double val = 1;
+        while (p < len) {
+            val /= 10;
+            if (str[p] < '0' || str[p] > '9') {
+                return -1;
+            }
+            ret = ret + (str[p] - '0') * val;
+            p++;
+        }
     }
     return ret;
 }
