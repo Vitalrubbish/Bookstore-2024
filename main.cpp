@@ -256,13 +256,17 @@ int main() {
                 std::cout << "Invalid" << '\n';
                 continue;
             }
-            if (stringToInt(token[1]) == -1) {
+            if (stringToInt(token[1]) < 1e-9) {
+                std::cout << "Invalid" << '\n';
+                continue;
+            }
+            double cost = Book_Operation::stringToDouble(token[2]);
+            if (cost <= 0) {
                 std::cout << "Invalid" << '\n';
                 continue;
             }
             bool check = Book_op.Import(stringToInt(token[1]));
             if (check) {
-                double cost = Book_Operation::stringToDouble(token[2]);
                 Money.writeFinance(2, cost);
             }
         }

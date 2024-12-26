@@ -303,7 +303,7 @@ void User_Operation::Insert(const std::string &UserID,
 }
 
 void User_Operation::Delete(const std::string &UserID) {
-    User data;
+    User data{};
     std::strcpy(data.UserID, UserID.c_str());
     data.UserID_len = static_cast<int>(UserID.size());
 
@@ -368,7 +368,7 @@ void User_Operation::Delete(const std::string &UserID) {
 }
 
 User User_Operation::getUser(const std::string & UserID) {
-    User data;
+    User data{};
     std::strcpy(data.UserID, UserID.c_str());
     data.UserID_len = static_cast<int>(UserID.size());
     data.privilege = -1;

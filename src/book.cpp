@@ -217,6 +217,10 @@ void Book_Operation::Modify(const std::string &str) {
                     return;
                 }
             }
+            if (tmp[1] == current_Book.ISBN) {
+                std::cout << "Invalid\n";
+                return;
+            }
             if (getBook(tmp[1]).Quantity != -1) {
                 std::cout << "Invalid" << '\n';
                 return;
