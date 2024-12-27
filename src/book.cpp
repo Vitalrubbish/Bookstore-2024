@@ -226,7 +226,7 @@ void Book_Operation::Modify(const std::string &str) {
                 return;
             }
             for (int j = 0; j < tmp[1].size(); j++) {
-                if (tmp[1][j] < 32 || tmp[1][j] > 126) {
+                if (!isgraph(tmp[1][j])) {
                     std::cout << "Invalid\n";
                     return;
                 }

@@ -308,6 +308,10 @@ void User_Operation::Insert(const std::string &UserID,
 
 void User_Operation::Delete(const std::string &UserID) {
     User data{};
+    if (UserID.size() > 60) {
+        std::cout << "Invalid\n";
+        return;
+    }
     std::strcpy(data.UserID, UserID.c_str());
     data.UserID_len = static_cast<int>(UserID.size());
 
