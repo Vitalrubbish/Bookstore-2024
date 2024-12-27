@@ -80,6 +80,9 @@ std::vector<std::string> inner_Split(const std::string &original) {
         if (p == len) {
             return token;
         }
+        if (p + 1 != len) {
+            return token;
+        }
         token.push_back(original.substr(cur, p - cur));
     }
     if (tp == "author") {
@@ -95,6 +98,9 @@ std::vector<std::string> inner_Split(const std::string &original) {
         if (p == len) {
             return token;
         }
+        if (p + 1 != len) {
+            return token;
+        }
         token.push_back(original.substr(cur, p - cur));
     }
     if (tp == "keyword") {
@@ -108,6 +114,9 @@ std::vector<std::string> inner_Split(const std::string &original) {
             p++;
         }
         if (p == len) {
+            return token;
+        }
+        if (p + 1 != len) {
             return token;
         }
         token.push_back(original.substr(cur, p - cur));
