@@ -273,7 +273,11 @@ int main() {
             }
             if (token.size() == 2) {
                 std::vector<std::string> inner_token = inner_Split(token[1]);
-                if (inner_token.size() < 2 || getType(inner_token[0]) == 0) {
+                if (inner_token.size() < 2 || getType(inner_token[0]) == 0 || getType(inner_token[0]) == 5) {
+                    std::cout << "Invalid" << '\n';
+                    continue;
+                }
+                if (inner_token[1].empty()) {
                     std::cout << "Invalid" << '\n';
                     continue;
                 }
@@ -283,6 +287,10 @@ int main() {
             std::cout << "Invalid" << '\n';
         }
         else if (token[0] == "buy") {
+            if (token.size() != 3) {
+                std::cout << "Invalid" << '\n';
+                continue;
+            }
             if (User_op.current_User.privilege < 1) {
                 std::cout << "Invalid" << '\n';
                 continue;
@@ -299,6 +307,10 @@ int main() {
             Money.writeFinance(1, cost);
         }
         else if (token[0] == "select") {
+            if (token.size() != 2) {
+                std::cout << "Invalid" << '\n';
+                continue;
+            }
             if (User_op.current_User.privilege < 3) {
                 std::cout << "Invalid" << '\n';
                 continue;

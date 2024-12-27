@@ -154,7 +154,7 @@ double Book_Operation::Buy(const std::string &ISBN, int Quantity) {
 }
 
 bool Book_Operation::Import(int Quantity) {
-    if (book_stack[book_stack.size() - 1].Quantity == -1) {
+    if (current_Book.Quantity == -1) {
         std::cout << "Invalid\n";
         return false;
     }
@@ -190,7 +190,7 @@ bool Book_Operation::Import(int Quantity) {
 }
 
 void Book_Operation::Modify(const std::string &str) {
-    if (book_stack[book_stack.size() - 1].Quantity == -1) {
+    if (current_Book.Quantity == -1) {
         std::cout << "Invalid" << '\n';
         return;
     }
@@ -199,6 +199,10 @@ void Book_Operation::Modify(const std::string &str) {
     std::vector<std::string> inner_token;
     inner_token.clear();
     int sz = static_cast<int>(token.size());
+    if (sz == 1) {
+        std::cout << "Invalid" << '\n';
+        return;
+    }
     bool flag[6] = {false, false, false, false, false, false};
     for (int i = 1; i < sz; i++) {
         std::vector<std::string> tmp = inner_Split(token[i]);
@@ -247,7 +251,7 @@ void Book_Operation::Modify(const std::string &str) {
                 return;
             }
             for (int j = 0; j < tmp[1].size(); j++) {
-                if (tmp[1][j] < 32 || tmp[1][j] > 126 || tmp[1][j] == '\"') {
+                if (!isgraph(tmp[1][j]) || tmp[1][j] == '\"') {
                     std::cout << "Invalid\n";
                     return;
                 }
@@ -263,7 +267,7 @@ void Book_Operation::Modify(const std::string &str) {
                 return;
             }
             for (int j = 0; j < tmp[1].size(); j++) {
-                if (tmp[1][j] < 32 || tmp[1][j] > 126 || tmp[1][j] == '\"') {
+                if (!isgraph(tmp[1][j]) || tmp[1][j] == '\"') {
                     std::cout << "Invalid\n";
                     return;
                 }

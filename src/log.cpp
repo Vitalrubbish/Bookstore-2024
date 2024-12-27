@@ -134,6 +134,7 @@ void User_Operation::Login(const std::string &UserID, const std::string &Passwor
                         init.Quantity = -1;
                         Book_op.book_stack.push_back(init);
                         Body.writeNode(p * block_size);
+                        Book_op.current_Book = init;
                     }
                     else {
                         std::cout << "Invalid" << '\n';
@@ -312,7 +313,7 @@ void User_Operation::Insert(const std::string &UserID,
 
 void User_Operation::Delete(const std::string &UserID) {
     User data{};
-    if (UserID.size() > 60) {
+    if (UserID.size() > 30) {
         std::cout << "Invalid\n";
         return;
     }
@@ -421,7 +422,11 @@ void User_Operation::changePassword(const std::string &UserID,
         std::cout << "Invalid" << '\n';
         return;
     }
-    User data;
+    if (UserID.size() > 30) {
+        std::cout << "Invalid\n";
+        return;
+    }
+    User data{};
     std::strcpy(data.UserID, UserID.c_str());
     data.UserID_len = static_cast<int>(UserID.size());
 
