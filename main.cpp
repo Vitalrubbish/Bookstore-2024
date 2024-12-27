@@ -253,7 +253,7 @@ int main() {
                 continue;
             }
             if (token.size() == 3) {
-                if (stringToInt(token[2]) == -1) {
+                if (token[2].size() > 10 || stringToInt(token[2]) == -1) {
                     std::cout << "Invalid" << '\n';
                     continue;
                 }
