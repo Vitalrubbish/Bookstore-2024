@@ -52,7 +52,7 @@ public:
             printf("+ %.2f - %.2f\n",finance_in, finance_out);
             return;
         }
-        /*if (count > 0) {
+        if (count > 0) {
             record = new Record[count + 3];
             file.read(reinterpret_cast<char*> (record), count * sizeof(Record));
             for (int i = 0; i < count; i++) {
@@ -65,7 +65,7 @@ public:
             }
             printf("+ %.2f - %.2f\n",finance_in, finance_out);
             delete[] record;
-        }*/
+        }
     }
 
     void writeFinance(int type, double finance) {

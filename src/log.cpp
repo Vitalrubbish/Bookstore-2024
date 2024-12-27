@@ -109,6 +109,7 @@ void User_Operation::Login(const std::string &UserID, const std::string &Passwor
     int p = Head.head;
     while (p != -1) {
         int size = link[p].size;
+        if (size <= 0) continue;
         Body.visitNode(p * block_size);
         if (string_cmp(data.UserID, bloc[0].UserID, data.UserID_len, bloc[0].UserID_len) != -1 &&
             string_cmp(data.UserID, bloc[size - 1].UserID, data.UserID_len, bloc[size - 1].UserID_len) != 1) {
@@ -155,6 +156,7 @@ void User_Operation::Logout() {
         int p = Head.head;
         while (p != -1) {
             int size = link[p].size;
+            if (size <= 0) continue;
             Body.visitNode(p * block_size);
             if (string_cmp(data.UserID, bloc[0].UserID, data.UserID_len, bloc[0].UserID_len) != -1 &&
                 string_cmp(data.UserID, bloc[size - 1].UserID, data.UserID_len, bloc[size - 1].UserID_len) != 1) {
@@ -239,6 +241,7 @@ void User_Operation::Insert(const std::string &UserID,
     while (p != -1) {
         nex_head = link[p].nex_head;
         size = link[p].size;
+        if (size <= 0) continue;
         Body.visitNode(p * block_size);
         if (string_cmp(bloc[0].UserID, data.UserID, bloc[0].UserID_len, data.UserID_len) == -1 &&
             string_cmp (bloc[size - 1].UserID, data.UserID, bloc[size - 1].UserID_len, data.UserID_len) == 1) {
@@ -313,6 +316,7 @@ void User_Operation::Delete(const std::string &UserID) {
     int size = 0, qsize = 0;
     while (p != -1) {
         size = link[p].size;
+        if (size <= 0) continue;
         Body.visitNode(p * block_size);
         if (string_cmp(data.UserID, bloc[0].UserID, data.UserID_len, bloc[0].UserID_len) != -1 &&
             string_cmp(data.UserID, bloc[size - 1].UserID, data.UserID_len, bloc[size - 1].UserID_len) != 1) {
@@ -377,6 +381,7 @@ User User_Operation::getUser(const std::string & UserID) {
     int p = Head.head;
     while (p != -1) {
         int size = link[p].size;
+        if (size <= 0) continue;
         Body.visitNode(p * block_size);
         if (string_cmp(data.UserID, bloc[0].UserID, data.UserID_len, bloc[0].UserID_len) != -1 &&
             string_cmp(data.UserID, bloc[size - 1].UserID, data.UserID_len, bloc[size - 1].UserID_len) != 1) {
@@ -415,6 +420,7 @@ void User_Operation::changePassword(const std::string &UserID,
     int p = Head.head;
     while (p != -1) {
         int size = link[p].size;
+        if (size <= 0) continue;
         Body.visitNode(p * block_size);
         if (string_cmp(data.UserID, bloc[0].UserID, data.UserID_len, bloc[0].UserID_len) != -1 &&
             string_cmp(data.UserID, bloc[size - 1].UserID, data.UserID_len, bloc[size - 1].UserID_len) != 1) {

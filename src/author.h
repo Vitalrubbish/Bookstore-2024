@@ -400,6 +400,7 @@ public:
         std::strcpy(index, name.c_str());
         int len = static_cast<int>(name.size());
         while (p != -1) {
+            if (link2[p].size <= 0) continue;
             Body.visitNode(p * block_size2);
             Pair2 head_ = bloc2[0], tail_ = bloc2[link2[p].size - 1];
             if (string_cmp(tail_.key, index, tail_.key_len, len) == 0 &&

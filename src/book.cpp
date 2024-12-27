@@ -119,6 +119,7 @@ double Book_Operation::Buy(const std::string &ISBN, int Quantity) {
     int p = Head.head;
     while (p != -1) {
         int size = link_[p].size;
+        if (size <= 0) continue;
         Body.visitNode(p * block_size_);
         if (string_cmp(data.ISBN, bloc_[0].ISBN, data.ISBN_len, bloc_[0].ISBN_len) != -1 &&
             string_cmp(data.ISBN, bloc_[size - 1].ISBN, data.ISBN_len, bloc_[size - 1].ISBN_len) != 1) {
@@ -158,6 +159,7 @@ bool Book_Operation::Import(int Quantity) {
     int size;
     while (p != -1) {
         size = link_[p].size;
+        if (size <= 0) continue;
         Body.visitNode(p * block_size_);
         if (string_cmp(current_Book.ISBN, bloc_[0].ISBN, current_Book.ISBN_len, bloc_[0].ISBN_len) != -1 &&
             string_cmp(current_Book.ISBN, bloc_[size - 1].ISBN, current_Book.ISBN_len, bloc_[size - 1].ISBN_len) != 1) {
@@ -314,6 +316,7 @@ void Book_Operation::Modify(const std::string &str) {
     int size;
     while (p != -1) {
         size = link_[p].size;
+        if (size <= 0) continue;
         Body.visitNode(p * block_size_);
         if (string_cmp(current_Book.ISBN, bloc_[0].ISBN, current_Book.ISBN_len, bloc_[0].ISBN_len) != -1 &&
             string_cmp(current_Book.ISBN, bloc_[size - 1].ISBN, current_Book.ISBN_len, bloc_[size - 1].ISBN_len) != 1) {
@@ -399,6 +402,7 @@ Book Book_Operation::getBook(const std::string &ISBN) {
     int size;
     while (p != -1) {
         size = link_[p].size;
+        if (size <= 0) continue;
         Body.visitNode(p * block_size_);
         if (string_cmp(data.ISBN, bloc_[0].ISBN, data.ISBN_len, bloc_[0].ISBN_len) != -1 &&
             string_cmp(data.ISBN, bloc_[size - 1].ISBN, data.ISBN_len, bloc_[size - 1].ISBN_len) != 1) {
@@ -559,6 +563,7 @@ void Book_Operation::Insert(const std::string &ISBN) {
     while (p != -1) {
         nex_head = link_[p].nex_head;
         size = link_[p].size;
+        if (size <= 0) continue;
         Body.visitNode(p * block_size_);
         if (string_cmp(bloc_[0].ISBN, data.ISBN, bloc_[0].ISBN_len, data.ISBN_len) == -1 &&
             string_cmp (bloc_[size - 1].ISBN, data.ISBN, bloc_[size - 1].ISBN_len, data.ISBN_len) == 1) {
@@ -575,7 +580,6 @@ void Book_Operation::Insert(const std::string &ISBN) {
     if (insert_type == 1) {
         if (size == block_size_) {
             addNode(p * block_size_, data);
-
             int split_place = p;
             p = Head.addHead(split_place);
             link_[p].size = block_size_ - block_size_ / 2;
@@ -728,6 +732,7 @@ void Book_Operation::Delete() {
     int size;
     while (p != -1) {
         size = link_[p].size;
+        if (size <= 0) continue;
         Body.visitNode(p * block_size_);
         if (string_cmp(current_Book.ISBN, bloc_[0].ISBN, current_Book.ISBN_len, bloc_[0].ISBN_len) != -1 &&
             string_cmp(current_Book.ISBN, bloc_[size - 1].ISBN, current_Book.ISBN_len, bloc_[size - 1].ISBN_len) != 1) {
