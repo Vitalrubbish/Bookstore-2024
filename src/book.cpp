@@ -101,6 +101,10 @@ void Book_Operation::deleteNode(int index) {
 }
 
 void Book_Operation::Select(const std::string &ISBN) {
+    if (ISBN.size() > 20) {
+        std::cout << "Invalid\n";
+        return;
+    }
     Book ret = getBook(ISBN);
     if (ret.Quantity == -1) {
         Insert(ISBN);
