@@ -458,6 +458,12 @@ void Book_Operation::Show(int type, const std::string &info) {
                         std::cout << "Invalid\n";
                         return;
                     }
+                    for (int j = 0; j < info.size(); j++) {
+                        if (!isgraph(info[j])) {
+                            std::cout << "Invalid\n";
+                            return;
+                        }
+                    }
                     std::string info_(bloc_[i].ISBN, bloc_[i].ISBN_len);
                     if (info == info_) {
                         flag = true;
@@ -467,6 +473,12 @@ void Book_Operation::Show(int type, const std::string &info) {
                     if (info.size() > 60) {
                         std::cout << "Invalid\n";
                         return;
+                    }
+                    for (int j = 0; j < info.size(); j++) {
+                        if (!isgraph(info[j])) {
+                            std::cout << "Invalid\n";
+                            return;
+                        }
                     }
                     std::string info_(bloc_[i].BookName, bloc_[i].BookName_len);
                     if (info == info_) {
@@ -478,6 +490,12 @@ void Book_Operation::Show(int type, const std::string &info) {
                         std::cout << "Invalid\n";
                         return;
                     }
+                    for (int j = 0; j < info.size(); j++) {
+                        if (!isgraph(info[j])) {
+                            std::cout << "Invalid\n";
+                            return;
+                        }
+                    }
                     std::string info_(bloc_[i].Author, bloc_[i].Author_len);
                     if (info == info_) {
                         flag = true;
@@ -487,6 +505,12 @@ void Book_Operation::Show(int type, const std::string &info) {
                     if (info.size() > 60) {
                         std::cout << "Invalid\n";
                         return;
+                    }
+                    for (int j = 0; j < info.size(); j++) {
+                        if (!isgraph(info[j])) {
+                            std::cout << "Invalid\n";
+                            return;
+                        }
                     }
                     std::vector<std::string> tok = Key_Split(info);
                     if (tok.size() != 1) {
