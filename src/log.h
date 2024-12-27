@@ -176,8 +176,6 @@ public:
 
     void Delete(const std::string &);
 
-    User getUser(const std::string &);
-
     void changePassword(const std::string &, const std::string &, const std::string &);
 
     void Login(const string &, const string &);

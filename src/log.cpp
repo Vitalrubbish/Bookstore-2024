@@ -264,7 +264,9 @@ void User_Operation::Insert(const std::string &UserID,
     if (insert_type == 1) {
         if (size == block_size) {
             addNode(p * block_size, data);
-
+            if (link[p].size == block_size) {
+                return;
+            }
             int split_place = p;
             p = Head.addHead(split_place);
             link[p].size = block_size - block_size / 2;
@@ -297,7 +299,9 @@ void User_Operation::Insert(const std::string &UserID,
             }
             Body.visitNode(q * block_size);
             addNode(q * block_size, data);
-
+            if (link[q].size == block_size) {
+                return;
+            }
             int split_place = q;
             q = Head.addHead(split_place);
             link[split_place].size = block_size / 2 + 1;
@@ -379,40 +383,6 @@ void User_Operation::Delete(const std::string &UserID) {
     else {
         std::cout << "Invalid" << '\n';
     }
-}
-
-User User_Operation::getUser(const std::string & UserID) {
-    User data{};
-    std::strcpy(data.UserID, UserID.c_str());
-    data.UserID_len = static_cast<int>(UserID.size());
-    data.privilege = -1;
-
-    int p = Head.head;
-    while (p != -1) {
-        int size = link[p].size;
-        if (size <= 0) continue;
-        Body.visitNode(p * block_size);
-        if (string_cmp(data.UserID, bloc[0].UserID, data.UserID_len, bloc[0].UserID_len) != -1 &&
-            string_cmp(data.UserID, bloc[size - 1].UserID, data.UserID_len, bloc[size - 1].UserID_len) != 1) {
-            int l = 0, r = size - 1, mid;
-            while (l <= r) {
-                mid = (l + r) / 2;
-                int val = string_cmp(data.UserID, bloc[mid].UserID, data.UserID_len, bloc[mid].UserID_len);
-                if (val == 0) {
-                    return bloc[mid];
-                }
-                if (val == -1) {
-                    r = mid - 1;
-                }
-                else {
-                    l = mid + 1;
-                }
-            }
-            break;
-            }
-        p = link[p].nex_head;
-    }
-    return data;
 }
 
 void User_Operation::changePassword(const std::string &UserID,

@@ -651,6 +651,9 @@ void Book_Operation::Insert(const std::string &ISBN) {
     if (insert_type == 1) {
         if (size == block_size_) {
             addNode(p * block_size_, data);
+            if (link_[p].size == block_size_) {
+                return;
+            }
             int split_place = p;
             p = Head.addHead(split_place);
             link_[p].size = block_size_ - block_size_ / 2;
@@ -683,7 +686,9 @@ void Book_Operation::Insert(const std::string &ISBN) {
             }
             Body.visitNode(q * block_size_);
             addNode(q * block_size_, data);
-
+            if (link_[q].size == block_size_) {
+                return;
+            }
             int split_place = q;
             q = Head.addHead(split_place);
             link_[split_place].size = block_size_ / 2 + 1;
