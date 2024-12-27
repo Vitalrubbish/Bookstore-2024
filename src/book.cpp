@@ -537,7 +537,7 @@ void Book_Operation::Insert(const std::string &ISBN) {
         return;
     }
     for (int i = 0; i < ISBN.size(); i++) {
-        if (ISBN[i] < 32 || ISBN[i] > 126) {
+        if (!isgraph(ISBN[i])) {
             std::cout << "Invalid\n";
             return;
         }

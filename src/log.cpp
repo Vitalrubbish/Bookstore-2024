@@ -1,4 +1,5 @@
 #include "log.h"
+#include <cctype>
 
 User_Operation::User_Operation():
     Head("NodeHead_for_users"),
@@ -206,7 +207,7 @@ void User_Operation::Insert(const std::string &UserID,
         return;
     }
     for (int i = 0; i < UserName.size(); i++) {
-        if (UserName[i] < 32 || UserName[i] > 126) {
+        if (!isgraph(UserName[i])) {
             std::cout << "Invalid" << '\n';
             return;
         }

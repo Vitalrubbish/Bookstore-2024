@@ -154,7 +154,7 @@ class User_Operation {
     std::vector <User> login_stack;
 public:
 
-    User current_User;
+    User current_User{};
 
     User_Operation();
 
