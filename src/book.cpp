@@ -488,8 +488,13 @@ void Book_Operation::Show(int type, const std::string &info) {
                         std::cout << "Invalid\n";
                         return;
                     }
+                    std::vector<std::string> tok = Key_Split(info);
+                    if (tok.size() != 1) {
+                        std::cout << "Invalid\n";
+                        return;
+                    }
                     std::string info_(bloc_[i].Keyword, bloc_[i].Keyword_len);
-                    std::vector<std::string> tok = Key_Split(info_);
+                    tok = Key_Split(info_);
                     for (int j = 0; j < tok.size(); j++) {
                         if (tok[j] == info) {
                             flag = true;
