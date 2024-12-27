@@ -40,7 +40,7 @@ struct HeadNode_ {
 extern Book* bloc_;
 extern HeadNode_ link_[100001];
 
-const int block_size_ = 300;
+const int block_size_ = 1000;
 const int sizeofP_ = sizeof(Book);
 const int sizeofH_ = 4 * sizeof(int);
 

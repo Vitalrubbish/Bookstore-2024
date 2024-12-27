@@ -10,6 +10,7 @@ Book_Operation::Book_Operation():
     Head("NodeHead_for_books"),
     Body("NodeBody_for_books") {
     initialise();
+    book_stack.clear();
 }
 
 Book_Operation::~Book_Operation() {

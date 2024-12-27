@@ -5,6 +5,7 @@ User_Operation::User_Operation():
     Head("NodeHead_for_users"),
     Body("NodeBody_for_users") {
     initialise();
+    login_stack.clear();
     current_User.privilege = 0;
     login_stack.push_back(current_User);
 }
