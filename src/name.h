@@ -199,7 +199,6 @@ public:
             Head.writeHead(p, link1[p]);
             p = link1[p].nex_head;
         }
-        file_.close();
 
         delete[] bloc1;
     }
@@ -375,7 +374,7 @@ public:
                 Head.deleteHead(p);
             }
             else if (p != -1 && q != -1 && size + qsize - 1 < block_size1) {
-                /*Pair1* tp = new Pair1[size];
+                Pair1* tp = new Pair1[size];
                 for (int i = 0; i < size - 1; i++) {
                     tp[i] = bloc1[i];
                 }
@@ -386,7 +385,7 @@ public:
                 }
                 link1[q].size = qsize + size - 1;
                 Body.writeNode(q * block_size1);
-                delete[] tp;*/
+                delete[] tp;
             }
         }
     }

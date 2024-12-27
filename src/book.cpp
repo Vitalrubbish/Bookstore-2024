@@ -57,7 +57,6 @@ void Book_Operation::flush() {
         Head.writeHead(p, link_[p]);
         p = link_[p].nex_head;
     }
-    file_.close();
 
     delete[] bloc_;
 }
