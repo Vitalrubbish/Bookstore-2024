@@ -56,7 +56,7 @@ std::vector<std::string> inner_Split(const std::string &original) {
     while (original[p] != '=' && p < len) {
         p++;
     }
-    if (p == len) {
+    if (p == len || p == len - 1) {
         return token;
     }
     std::string tp = original.substr(1, p - 1);
