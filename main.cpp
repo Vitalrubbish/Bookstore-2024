@@ -168,6 +168,10 @@ int main() {
         }
         //todo: judge the permission to do current operation.
         if (token[0] == "quit" || token[0] == "exit") {
+            if (token.size() != 1) {
+                std::cout << "Invalid\n";
+                continue;
+            }
             break;
         }
         if (token[0] == "su") {
