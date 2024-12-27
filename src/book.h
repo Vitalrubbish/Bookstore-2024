@@ -23,8 +23,8 @@ struct Book {
     int ISBN_len = 0;
     int BookName_len = 0;
     int Author_len = 0;
-    int Keyword_len{};
-    long long Quantity = 0;
+    int Keyword_len = 0;
+    int Quantity = 0;
     double price = 0;
     bool is_new = false;
 };

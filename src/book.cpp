@@ -106,6 +106,12 @@ void Book_Operation::Select(const std::string &ISBN) {
         std::cout << "Invalid\n";
         return;
     }
+    for (int i = 0; i < ISBN.size(); i++) {
+        if (!isgraph(ISBN[i])) {
+            std::cout << "Invalid\n";
+            return;
+        }
+    }
     Book ret = getBook(ISBN);
     if (ret.Quantity == -1) {
         Insert(ISBN);
@@ -121,6 +127,12 @@ double Book_Operation::Buy(const std::string &ISBN, int Quantity) {
     if (ISBN.size() > 20) {
         std::cout << "Invalid\n";
         return -1;
+    }
+    for (int i = 0; i < ISBN.size(); i++) {
+        if (!isgraph(ISBN[i])) {
+            std::cout << "Invalid\n";
+            return -1;
+        }
     }
     std::strcpy(data.ISBN, ISBN.c_str());
     data.ISBN_len = static_cast<int>(ISBN.size());
