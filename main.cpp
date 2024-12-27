@@ -216,17 +216,11 @@ int main() {
                 continue;
             }
             int privilege;
-            if (token[3] == "0") {
-                privilege = 0;
-            }
-            else if (token[3] == "1") {
+            if (token[3] == "1") {
                 privilege = 1;
             }
             else if (token[3] == "3") {
                 privilege = 3;
-            }
-            else if (token[3] == "7") {
-                privilege = 7;
             }
             else {
                 std::cout << "Invalid\n";
