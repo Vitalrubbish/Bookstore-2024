@@ -103,6 +103,10 @@ void User_Operation::deleteNode(int index) {
 
 void User_Operation::Login(const std::string &UserID, const std::string &Password_input) {
     User data{};
+    if (UserID.size() > 30) {
+        std::cout << "Invalid\n";
+        return;
+    }
     std::strcpy(data.UserID, UserID.c_str());
     data.UserID_len = static_cast<int>(UserID.size());
 
@@ -201,7 +205,7 @@ void User_Operation::Quit() {
 void User_Operation::Insert(const std::string &UserID,
                             const std::string &Password,
                             const std::string &UserName,
-                            int privilege = 1) {
+                            int privilege) {
     if (UserName.size() > 30) {
         std::cout << "Invalid" << '\n';
         return;

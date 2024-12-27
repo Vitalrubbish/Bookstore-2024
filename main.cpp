@@ -186,6 +186,10 @@ int main() {
                 std::cout << "Invalid" << '\n';
                 continue;
             }
+            if (token[0].size() != 1) {
+                std::cout << "Invalid\n";
+                continue;
+            }
             User_op.Logout();
         }
         else if (token[0] == "register") {
