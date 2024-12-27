@@ -463,6 +463,7 @@ void Book_Operation::Show(int type, const std::string &info) {
         int size;
         while (p != -1) {
             size = link_[p].size;
+            if (size <= 0) continue;
             Body.visitNode(p * block_size_);
             if (string_cmp(data.ISBN, bloc_[0].ISBN, data.ISBN_len, bloc_[0].ISBN_len) != -1 &&
                 string_cmp(data.ISBN, bloc_[size - 1].ISBN, data.ISBN_len, bloc_[size - 1].ISBN_len) != 1) {
