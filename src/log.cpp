@@ -104,7 +104,7 @@ void User_Operation::deleteNode(int index) {
 
 void User_Operation::Login(const std::string &UserID, const std::string &Password_input) {
     User data{};
-    if (UserID.size() > 30) {
+    if (!checkValidity(UserID) || !checkValidity(Password_input)) {
         std::cout << "Invalid\n";
         return;
     }
@@ -318,7 +318,7 @@ void User_Operation::Insert(const std::string &UserID,
 
 void User_Operation::Delete(const std::string &UserID) {
     User data{};
-    if (UserID.size() > 30) {
+    if (!checkValidity(UserID)) {
         std::cout << "Invalid\n";
         return;
     }
@@ -389,11 +389,7 @@ void User_Operation::Delete(const std::string &UserID) {
 void User_Operation::changePassword(const std::string &UserID,
                                     const std::string &current_Password,
                                     const std::string &new_Password) {
-    if (!checkValidity(new_Password)) {
-        std::cout << "Invalid" << '\n';
-        return;
-    }
-    if (UserID.size() > 30) {
+    if (!checkValidity(UserID) || !checkValidity(new_Password) || !checkValidity(current_Password)) {
         std::cout << "Invalid\n";
         return;
     }
