@@ -376,7 +376,7 @@ public:
                 Head.deleteHead(p);
             }
             else if (p != -1 && q != -1 && size + qsize - 1 < block_size2) {
-                Pair2* tp = new Pair2[size];
+                /*Pair2* tp = new Pair2[size];
                 for (int i = 0; i < size - 1; i++) {
                     tp[i] = bloc2[i];
                 }
@@ -387,7 +387,7 @@ public:
                 }
                 link2[q].size = qsize + size - 1;
                 Body.writeNode(q * block_size2);
-                delete[] tp;
+                delete[] tp;*/
             }
         }
     }

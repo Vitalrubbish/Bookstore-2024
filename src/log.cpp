@@ -353,7 +353,7 @@ void User_Operation::Delete(const std::string &UserID) {
             Head.deleteHead(p);
         }
         else if (p != -1 && q != -1 && size + qsize - 1 < block_size) {
-            User* tp = new User[size];
+            /*User* tp = new User[size];
             for (int i = 0; i < size - 1; i++) {
                 tp[i] = bloc[i];
             }
@@ -364,7 +364,7 @@ void User_Operation::Delete(const std::string &UserID) {
             }
             link[q].size = qsize + size - 1;
             Body.writeNode(q * block_size);
-            delete[] tp;
+            delete[] tp;*/
         }
     }
     else {
