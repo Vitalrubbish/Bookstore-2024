@@ -146,6 +146,7 @@ void User_Operation::Login(const std::string &UserID, const std::string &Passwor
             }
         p = link[p].nex_head;
     }
+    std::cout << "Invalid\n";
 }
 
 void User_Operation::Logout() {
