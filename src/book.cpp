@@ -436,13 +436,64 @@ Book Book_Operation::getBook(const std::string &ISBN) {
 
 void Book_Operation::Show(int type, const std::string &info) {
     bool put = false;
-    if (type == -1) {
+    bool flag;
+    //if (type == -1) {
         int p = Head.head;
         int size;
         while (p != -1) {
             size = link_[p].size;
             Body.visitNode(p * block_size_);
             for (int i = 0; i < size; i++) {
+                flag = false;
+                if (type == -1) {
+                    flag = true;
+                }
+                if (type == 1) {
+                    if (info.size() > 20) {
+                        std::cout << "Invalid\n";
+                        return;
+                    }
+                    std::string info_(bloc_[i].ISBN, bloc_[i].ISBN_len);
+                    if (info == info_) {
+                        flag = true;
+                    }
+                }
+                if (type == 2) {
+                    if (info.size() > 60) {
+                        std::cout << "Invalid\n";
+                        return;
+                    }
+                    std::string info_(bloc_[i].BookName, bloc_[i].BookName_len);
+                    if (info == info_) {
+                        flag = true;
+                    }
+                }
+                if (type == 3) {
+                    if (info.size() > 60) {
+                        std::cout << "Invalid\n";
+                        return;
+                    }
+                    std::string info_(bloc_[i].Author, bloc_[i].Author_len);
+                    if (info == info_) {
+                        flag = true;
+                    }
+                }
+                if (type == 4) {
+                    if (info.size() > 60) {
+                        std::cout << "Invalid\n";
+                        return;
+                    }
+                    std::string info_(bloc_[i].Keyword, bloc_[i].Keyword_len);
+                    std::vector<std::string> tok = Key_Split(info_);
+                    for (int j = 0; j < tok.size(); j++) {
+                        if (tok[j] == info) {
+                            flag = true;
+                        }
+                    }
+                }
+                if (!flag) {
+                    continue;
+                }
                 put = true;
                 std::string ISBN(bloc_[i].ISBN, bloc_[i].ISBN_len);
                 std::string BookName(bloc_[i].BookName, bloc_[i].BookName_len);
@@ -460,9 +511,9 @@ void Book_Operation::Show(int type, const std::string &info) {
         if (!put) {
             std::cout << '\n';
         }
-        return;
-    }
-    if (type == 1) {
+    //    return;
+    // }
+    /*if (type == 1) {
         Book data;
         if (info.size() > 20) {
             std::cout << "Invalid\n";
@@ -545,7 +596,7 @@ void Book_Operation::Show(int type, const std::string &info) {
     }
     if (!put) {
         std::cout << '\n';
-    }
+    }*/
 }
 
 void Book_Operation::Insert(const std::string &ISBN) {
