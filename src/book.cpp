@@ -312,7 +312,7 @@ void Book_Operation::Modify(const std::string &str) {
         }
         for (int i = 0; i < book_stack.size(); i++) {
             std::string cur_ISBN(book_stack[i].ISBN, book_stack[i].ISBN_len);
-            if (cur_ISBN == prev_ISBN) {
+            if (cur_ISBN == prev_ISBN && book_stack[i].Quantity != -1) {
                 book_stack[i] = current_Book;
             }
         }
@@ -381,7 +381,7 @@ void Book_Operation::Modify(const std::string &str) {
                     std::string ISBN(current_Book.ISBN, current_Book.ISBN_len);
                     for (int i = 0; i < book_stack.size(); i++) {
                         std::string cur_ISBN(book_stack[i].ISBN, book_stack[i].ISBN_len);
-                        if (cur_ISBN == ISBN) {
+                        if (cur_ISBN == ISBN && book_stack[i].Quantity != -1) {
                             book_stack[i] = current_Book;
                         }
                     }
@@ -873,19 +873,12 @@ bool Book_Operation::checkValidity(const std::string &str) {
 }
 
 int Book_Operation::string_cmp(char* s1, char* s2, int len_1, int len_2) {
-    int common_len = std::min(len_1, len_2);
-    for (int i = 0; i < common_len; i++) {
-        if (s1[i] > s2[i]) {
-            return 1;
-        }
-        if (s1[i] < s2[i]) {
-            return -1;
-        }
-    }
-    if (len_1 > len_2) {
+    std::string x(s1, len_1);
+    std::string y(s2, len_2);
+    if (x > y) {
         return 1;
     }
-    if (len_1 < len_2) {
+    if (x < y) {
         return -1;
     }
     return 0;
