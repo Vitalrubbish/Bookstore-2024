@@ -843,6 +843,9 @@ int Book_Operation::string_cmp(char* s1, char* s2, int len_1, int len_2) {
 double Book_Operation::stringToDouble(const std::string &str) {
     double ret = 0;
     int len = static_cast<int>(str.size());
+    if (len > 13) {
+        return -1;
+    }
     int p = 0;
     while (str[p] != '.' && p < len) {
         if (str[p] < '0' || str[p] > '9') {
