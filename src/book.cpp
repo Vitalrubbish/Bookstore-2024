@@ -200,7 +200,7 @@ void Book_Operation::Modify(const std::string &str) {
     inner_token.clear();
     int sz = static_cast<int>(token.size());
     if (sz == 1) {
-        //std::cout << "Invalid" << '\n';
+        std::cout << "Invalid" << '\n';
         return;
     }
     bool flag[6] = {false, false, false, false, false, false};
