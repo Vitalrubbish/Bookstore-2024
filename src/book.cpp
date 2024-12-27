@@ -113,6 +113,10 @@ void Book_Operation::Select(const std::string &ISBN) {
 
 double Book_Operation::Buy(const std::string &ISBN, int Quantity) {
     Book data;
+    if (ISBN.size() > 20) {
+        std::cout << "Invalid\n";
+        return -1;
+    }
     std::strcpy(data.ISBN, ISBN.c_str());
     data.ISBN_len = static_cast<int>(ISBN.size());
     int p = Head.head;
@@ -456,6 +460,10 @@ void Book_Operation::Show(int type, const std::string &info) {
     }
     if (type == 1) {
         Book data;
+        if (info.size() > 20) {
+            std::cout << "Invalid\n";
+            return;
+        }
         std::strcpy(data.ISBN, info.c_str());
         data.ISBN_len = static_cast<int>(info.size());
         data.Quantity = -1;
@@ -497,6 +505,10 @@ void Book_Operation::Show(int type, const std::string &info) {
         }
     }
     else {
+        if (info.size() > 60) {
+            std::cout << "Invalid\n";
+            return;
+        }
         std::vector <std::string> S;
         if (type == 2) {
             S = name_op.Find(info);
