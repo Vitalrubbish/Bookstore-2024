@@ -16,14 +16,14 @@ using std::ifstream;
 using std::ofstream;
 
 struct Book {
-    char ISBN[21];
-    char BookName[31];
-    char Author[61];
-    char Keyword[61];
+    char ISBN[22]{};
+    char BookName[62]{};
+    char Author[62]{};
+    char Keyword[62]{};
     int ISBN_len = 0;
     int BookName_len = 0;
     int Author_len = 0;
-    int Keyword_len;
+    int Keyword_len{};
     int Quantity = 0;
     double price = 0;
     bool is_new = false;
@@ -55,7 +55,7 @@ public:
 
     NodeHead_for_Books() = default;
 
-    NodeHead_for_Books(const std::string &file_name) {
+    explicit NodeHead_for_Books(const std::string &file_name) {
         this -> file_name = file_name;
         file.open(file_name, std::ios::in|std::ios::out|std::ios::binary);
         if (!file.is_open()) {
@@ -70,14 +70,14 @@ public:
     }
 
     HeadNode_ visitHead(int index) {
-        HeadNode_ ret;
+        HeadNode_ ret{};
         file.seekp(index * sizeofH_);
         file.read(reinterpret_cast<char*>(&ret), sizeofH_);
         ret.cur_index = ret.id * block_size_;
         return ret;
     }
 
-    int getBlockSize(int index) {
+    static int getBlockSize(int index) {
         return link_[index].size;
     }
 
@@ -88,7 +88,7 @@ public:
 
     int addHead(int index) {
         new_id++;
-        HeadNode_ head_node;
+        HeadNode_ head_node{};
         if (cur_size == 0) {
             head = new_id;
             head_node.id = new_id;
@@ -134,7 +134,7 @@ public:
 
     NodeBody_for_Books() = default;
 
-    NodeBody_for_Books(const std::string &file_name) {
+    explicit NodeBody_for_Books(const std::string &file_name) {
         this -> file_name = file_name;
         file.open(file_name, std::ios::in|std::ios::out|std::ios::binary);
         if (!file.is_open()) {
@@ -178,7 +178,7 @@ public:
 
     void flush();
 
-    void addNode(int, Book);
+    static void addNode(int, Book);
 
     static void deleteNode(int);
 

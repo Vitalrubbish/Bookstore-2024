@@ -11,8 +11,8 @@ using std::ofstream;
 const int block_size3 = 300;
 
 struct Pair3 {
-    char key[61];
-    char value[21];
+    char key[62];
+    char value[22];
     int key_len;
     int value_len;
 };

@@ -64,8 +64,7 @@ void Book_Operation::flush() {
 
 void Book_Operation::addNode(int index, Book data) {
     int cursor = index / block_size_;
-    int cur_size = Head.getBlockSize(cursor);
-    int insert_place;
+    int cur_size = NodeHead_for_Books::getBlockSize(cursor);
     Book ret;
 
     int l = 0, r = cur_size - 1, mid;
@@ -83,7 +82,7 @@ void Book_Operation::addNode(int index, Book data) {
             l = mid + 1;
         }
     }
-    insert_place = l;
+    int insert_place = l;
 
     for (int i = cur_size - 1; i >= insert_place; i--) {
         bloc_[i + 1] = bloc_[i];
@@ -118,9 +117,8 @@ double Book_Operation::Buy(const std::string &ISBN, int Quantity) {
     std::strcpy(data.ISBN, ISBN.c_str());
     data.ISBN_len = static_cast<int>(ISBN.size());
     int p = Head.head;
-    int size;
     while (p != -1) {
-        size = link_[p].size;
+        int size = link_[p].size;
         Body.visitNode(p * block_size_);
         if (string_cmp(data.ISBN, bloc_[0].ISBN, data.ISBN_len, bloc_[0].ISBN_len) != -1 &&
             string_cmp(data.ISBN, bloc_[size - 1].ISBN, data.ISBN_len, bloc_[size - 1].ISBN_len) != 1) {

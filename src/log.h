@@ -11,9 +11,9 @@ using std::string;
 using std::fstream;
 
 struct User{
-    char UserID[31];
-    char Password[31];
-    char UserName[31];
+    char UserID[32];
+    char Password[32];
+    char UserName[32];
     int UserID_len;
     int Password_len;
     int UserName_len;
