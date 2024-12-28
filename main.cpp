@@ -277,7 +277,6 @@ int main() {
             std::cout << "Invalid" << '\n';
         }
         else if (token[0] == "show") {
-            assert(false);
             if (User_op.current_User.privilege < 1) {
                 std::cout << "Invalid" << '\n';
                 continue;
@@ -302,6 +301,7 @@ int main() {
             std::cout << "Invalid" << '\n';
         }
         else if (token[0] == "buy") {
+            assert(false);
             if (token.size() != 3) {
                 std::cout << "Invalid" << '\n';
                 continue;
