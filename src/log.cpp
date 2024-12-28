@@ -1,5 +1,4 @@
 #include "log.h"
-#include <cctype>
 
 User_Operation::User_Operation():
     Head("NodeHead_for_users"),

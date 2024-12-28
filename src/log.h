@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cctype>
 #include <cstring>
 #include <vector>
 #include "book.h"
