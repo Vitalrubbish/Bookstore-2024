@@ -314,7 +314,7 @@ int main() {
                 continue;
             }
             double cost = Book_op.Buy(token[1], stringToInt(token[2]));
-            if (cost < -1e-7) {
+            if (cost < 0) {
                 std::cout << "Invalid" << '\n';
                 continue;
             }
@@ -352,7 +352,7 @@ int main() {
                 continue;
             }
             double cost = Book_Operation::stringToDouble(token[2]);
-            if (cost < 0) {
+            if (cost <= 0) {
                 std::cout << "Invalid" << '\n';
                 continue;
             }
