@@ -314,7 +314,7 @@ int main() {
                 continue;
             }
             double cost = Book_op.Buy(token[1], stringToInt(token[2]));
-            if (cost < 0) {
+            if (cost < -1e-7) {
                 std::cout << "Invalid" << '\n';
                 continue;
             }
