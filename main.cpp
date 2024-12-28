@@ -28,6 +28,11 @@ std::vector<std::string> Split(const std::string &original) {
     int p = 0;
     std::string cur;
     while (p < len) {
+        if (original[p] == '\0') {
+            std::cout << "Invalid\n";
+            token.clear();
+            return token;
+        }
         if (original[p] == ' ') {
             if (!cur.empty()) {
                 token.push_back(cur);
@@ -77,9 +82,6 @@ std::vector<std::string> inner_Split(const std::string &original) {
         while (p < len && original[p] != '\"') {
             p++;
         }
-        if (p == len) {
-            return token;
-        }
         if (p + 1 != len) {
             return token;
         }
@@ -95,9 +97,6 @@ std::vector<std::string> inner_Split(const std::string &original) {
         while (p < len && original[p] != '\"') {
             p++;
         }
-        if (p == len) {
-            return token;
-        }
         if (p + 1 != len) {
             return token;
         }
@@ -112,9 +111,6 @@ std::vector<std::string> inner_Split(const std::string &original) {
         cur = p;
         while (p < len && original[p] != '\"') {
             p++;
-        }
-        if (p == len) {
-            return token;
         }
         if (p + 1 != len) {
             return token;
