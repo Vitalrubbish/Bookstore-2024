@@ -301,7 +301,6 @@ int main() {
             std::cout << "Invalid" << '\n';
         }
         else if (token[0] == "buy") {
-            assert(false);
             if (token.size() != 3) {
                 std::cout << "Invalid" << '\n';
                 continue;
@@ -340,6 +339,7 @@ int main() {
             Book_op.Modify(op);
         }
         else if (token[0] == "import") {
+            assert(false);
             if (User_op.current_User.privilege < 3) {
                 std::cout << "Invalid" << '\n';
                 continue;
