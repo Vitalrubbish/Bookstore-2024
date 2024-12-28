@@ -258,6 +258,7 @@ int main() {
             User_op.Delete(token[1]);
         }
         else if (token.size() > 1 && token[0] == "show" && token[1] == "finance") {
+            assert(false);
             if (User_op.current_User.privilege < 7) {
                 std::cout << "Invalid" << '\n';
                 continue;
