@@ -31,7 +31,6 @@ std::vector<std::string> Split(const std::string &original) {
     std::string cur;
     while (p < len) {
         if (!isgraph(original[p]) && original[p] != ' ') {
-            assert(false);
             std::cout << "Invalid\n";
             token.clear();
             return token;

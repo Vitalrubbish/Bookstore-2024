@@ -152,7 +152,7 @@ double Book_Operation::Buy(const std::string &ISBN, int Quantity) {
                         return -1;
                     }
                     bloc_[mid].Quantity -= Quantity;
-                    printf("%.2f\n", bloc_[mid].price * Quantity);
+                    printf("%.2lf\n", bloc_[mid].price * Quantity);
                     Body.writeNode(p * block_size_);
                     return bloc_[mid].price * Quantity;
                 }
@@ -549,7 +549,7 @@ void Book_Operation::Show(int type, const std::string &info) {
                           << BookName << '\t'
                           << Author << '\t'
                           << Keyword << '\t';
-                printf("%.2f\t", bloc_[i].price);
+                printf("%.2lf\t", bloc_[i].price);
                 std::cout << bloc_[i].Quantity << '\n';
             }
             p = link_[p].nex_head;

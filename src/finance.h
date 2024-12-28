@@ -49,7 +49,7 @@ public:
         }
         double finance_in = 0, finance_out = 0;
         if (count == 0) {
-            printf("+ %.2f - %.2f\n",finance_in, finance_out);
+            printf("+ %.2lf - %.2lf\n",finance_in, finance_out);
             return;
         }
         if (count > 0) {
@@ -63,7 +63,7 @@ public:
                     finance_out += record[i].amount;
                 }
             }
-            printf("+ %.2f - %.2f\n",finance_in, finance_out);
+            printf("+ %.2lf - %.2lf\n",finance_in, finance_out);
             delete[] record;
         }
     }
