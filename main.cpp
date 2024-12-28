@@ -28,7 +28,7 @@ std::vector<std::string> Split(const std::string &original) {
     int p = 0;
     std::string cur;
     while (p < len) {
-        if (original[p] == '\0') {
+        if (!isgraph(original[p]) && original[p] != ' ') {
             std::cout << "Invalid\n";
             token.clear();
             return token;
@@ -127,7 +127,6 @@ std::vector<std::string> inner_Split(const std::string &original) {
 }
 
 int stringToInt(const std::string &str) {
-    //todo: judge whether str is a integer.
     int len = static_cast<int>(str.size());
     int p = 0;
     long long ans = 0;
@@ -214,6 +213,10 @@ int main() {
                 continue;
             }
             if (token.size() == 3) {
+                if (User_op.current_User.privilege < 7) {
+                    std::cout << "Invalid" << '\n';
+                    continue;
+                }
                 User_op.changePassword(token[1],"", token[2]);
                 continue;
             }

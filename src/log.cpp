@@ -212,17 +212,11 @@ void User_Operation::Insert(const std::string &UserID,
         std::cout << "Invalid" << '\n';
         return;
     }
-    for (int i = 0; i < UserName.size(); i++) {
-        if (!isgraph(UserName[i])) {
-            std::cout << "Invalid" << '\n';
-            return;
-        }
-    }
     if (!checkValidity(UserID) || !checkValidity(Password)) {
         std::cout << "Invalid" << '\n';
         return;
     }
-    User data;
+    User data{};
     std::strcpy(data.UserID, UserID.c_str());
     std::strcpy(data.Password, Password.c_str());
     std::strcpy(data.UserName, UserName.c_str());
