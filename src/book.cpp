@@ -11,6 +11,7 @@ Book_Operation::Book_Operation():
     Body("NodeBody_for_books") {
     initialise();
     book_stack.clear();
+    current_Book.Quantity = -1;
 }
 
 Book_Operation::~Book_Operation() {

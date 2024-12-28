@@ -177,6 +177,9 @@ void User_Operation::Logout() {
                         if (Book_op.book_stack.size() > 0) {
                             Book_op.current_Book = Book_op.book_stack[Book_op.book_stack.size() - 1];
                         }
+                        else {
+                            Book_op.current_Book.Quantity = -1;
+                        }
                         Body.writeNode(p * block_size);
                         return;
                     }
