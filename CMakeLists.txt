@@ -9,7 +9,6 @@ include_directories(src)
 add_executable(code
         src/book.cpp
         src/book.h
-        src/diary.cpp
         src/diary.h
         src/log.cpp
         src/log.h

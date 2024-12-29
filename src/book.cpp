@@ -1,5 +1,7 @@
 #include "book.h"
 
+extern bool valid;
+
 std::vector<std::string> Split(const std::string &);
 
 std::vector<std::string> inner_Split(const std::string &);
@@ -127,11 +129,13 @@ double Book_Operation::Buy(const std::string &ISBN, int Quantity) {
     Book data;
     if (ISBN.size() > 20) {
         std::cout << "Invalid\n";
+        valid = false;
         return -1;
     }
     for (int i = 0; i < ISBN.size(); i++) {
         if (!isgraph(ISBN[i])) {
             std::cout << "Invalid\n";
+            valid = false;
             return -1;
         }
     }
@@ -174,6 +178,7 @@ double Book_Operation::Buy(const std::string &ISBN, int Quantity) {
 bool Book_Operation::Import(int Quantity) {
     if (current_Book.Quantity == -1) {
         std::cout << "Invalid\n";
+        valid = false;
         return false;
     }
     int p = Head.head;
@@ -210,6 +215,7 @@ bool Book_Operation::Import(int Quantity) {
 void Book_Operation::Modify(const std::string &str) {
     if (current_Book.Quantity == -1) {
         std::cout << "Invalid" << '\n';
+        valid = false;
         return;
     }
     bool ISBN_modify = false;
@@ -219,6 +225,7 @@ void Book_Operation::Modify(const std::string &str) {
     int sz = static_cast<int>(token.size());
     if (sz == 1) {
         std::cout << "Invalid" << '\n';
+        valid = false;
         return;
     }
     bool flag[6] = {false, false, false, false, false, false};
@@ -226,39 +233,47 @@ void Book_Operation::Modify(const std::string &str) {
         std::vector<std::string> tmp = inner_Split(token[i]);
         if (tmp.size() < 2) {
             std::cout << "Invalid\n";
+            valid = false;
             return;
         }
         inner_token.push_back(tmp[0]);
         inner_token.push_back(tmp[1]);
         if (tmp[1].empty()) {
             std::cout << "Invalid\n";
+            valid = false;
             return;
         }
         if (flag[getType(tmp[0])]) {
             std::cout << "Invalid\n";
+            valid = false;
             return;
         }
         if (getType(tmp[0]) == 0) {
             std::cout << "Invalid\n";
+            valid = false;
             return;
         }
         if (getType(tmp[0]) == 1) {
             if (tmp[1].size() > 20) {
                 std::cout << "Invalid\n";
+                valid = false;
                 return;
             }
             for (int j = 0; j < tmp[1].size(); j++) {
                 if (!isgraph(tmp[1][j])) {
                     std::cout << "Invalid\n";
+                    valid = false;
                     return;
                 }
             }
             if (tmp[1] == current_Book.ISBN) {
                 std::cout << "Invalid\n";
+                valid = false;
                 return;
             }
             if (getBook(tmp[1]).Quantity != -1) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 return;
             }
             ISBN_modify = true;
@@ -266,27 +281,32 @@ void Book_Operation::Modify(const std::string &str) {
         if (getType(tmp[0]) == 4) {
             if (tmp[1].size() > 60) {
                 std::cout << "Invalid\n";
+                valid = false;
                 return;
             }
             for (int j = 0; j < tmp[1].size(); j++) {
                 if (!isgraph(tmp[1][j]) || tmp[1][j] == '\"') {
                     std::cout << "Invalid\n";
+                    valid = false;
                     return;
                 }
             }
             if (!checkValidity(tmp[1])) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 return;
             }
         }
         if (getType(tmp[0]) == 2 || getType(tmp[0]) == 3) {
             if (tmp[1].size() > 60) {
                 std::cout << "Invalid\n";
+                valid = false;
                 return;
             }
             for (int j = 0; j < tmp[1].size(); j++) {
                 if (!isgraph(tmp[1][j]) || tmp[1][j] == '\"') {
                     std::cout << "Invalid\n";
+                    valid = false;
                     return;
                 }
             }
@@ -294,10 +314,12 @@ void Book_Operation::Modify(const std::string &str) {
         if (getType(tmp[0]) == 5) {
             if (tmp[1].size() > 13) {
                 std::cout << "Invalid\n";
+                valid = false;
                 return;
             }
             if (stringToDouble(tmp[1]) < 0) {
                 std::cout << "Invalid\n";
+                valid = false;
                 return;
             }
         }
@@ -469,11 +491,13 @@ void Book_Operation::Show(int type, const std::string &info) {
                 if (type == 1) {
                     if (info.size() > 20) {
                         std::cout << "Invalid\n";
+                        valid = false;
                         return;
                     }
                     for (int j = 0; j < info.size(); j++) {
                         if (!isgraph(info[j])) {
                             std::cout << "Invalid\n";
+                            valid = false;
                             return;
                         }
                     }
@@ -485,11 +509,13 @@ void Book_Operation::Show(int type, const std::string &info) {
                 if (type == 2) {
                     if (info.size() > 60) {
                         std::cout << "Invalid\n";
+                        valid = false;
                         return;
                     }
                     for (int j = 0; j < info.size(); j++) {
                         if (!isgraph(info[j])) {
                             std::cout << "Invalid\n";
+                            valid = false;
                             return;
                         }
                     }
@@ -501,11 +527,13 @@ void Book_Operation::Show(int type, const std::string &info) {
                 if (type == 3) {
                     if (info.size() > 60) {
                         std::cout << "Invalid\n";
+                        valid = false;
                         return;
                     }
                     for (int j = 0; j < info.size(); j++) {
                         if (!isgraph(info[j])) {
                             std::cout << "Invalid\n";
+                            valid = false;
                             return;
                         }
                     }
@@ -517,17 +545,20 @@ void Book_Operation::Show(int type, const std::string &info) {
                 if (type == 4) {
                     if (info.size() > 60) {
                         std::cout << "Invalid\n";
+                        valid = false;
                         return;
                     }
                     for (int j = 0; j < info.size(); j++) {
                         if (!isgraph(info[j])) {
                             std::cout << "Invalid\n";
+                            valid = false;
                             return;
                         }
                     }
                     std::vector<std::string> tok = Key_Split(info);
                     if (tok.size() != 1) {
                         std::cout << "Invalid\n";
+                        valid = false;
                         return;
                     }
                     std::string info_(bloc_[i].Keyword, bloc_[i].Keyword_len);
@@ -563,11 +594,13 @@ void Book_Operation::Show(int type, const std::string &info) {
 void Book_Operation::Insert(const std::string &ISBN) {
     if (ISBN.size() > 20) {
         std::cout << "Invalid\n";
+        valid = false;
         return;
     }
     for (int i = 0; i < ISBN.size(); i++) {
         if (!isgraph(ISBN[i])) {
             std::cout << "Invalid\n";
+            valid = false;
             return;
         }
     }

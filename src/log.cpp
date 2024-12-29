@@ -1,5 +1,7 @@
 #include "log.h"
 
+extern bool valid;
+
 User_Operation::User_Operation():
     Head("NodeHead_for_users"),
     Body("NodeBody_for_users") {
@@ -73,6 +75,7 @@ void User_Operation::addNode(int index, User data) {
         int val = string_cmp(data.UserID, ret.UserID, data.UserID_len, ret.UserID_len);
         if (val == 0) {
             std::cout << "Invalid" << '\n';
+            valid = false;
             return;
         }
         if (val == -1) {
@@ -105,6 +108,7 @@ void User_Operation::Login(const std::string &UserID, const std::string &Passwor
     User data{};
     if (!checkValidity(UserID) || !checkValidity(Password_input)) {
         std::cout << "Invalid\n";
+        valid = false;
         return;
     }
     std::strcpy(data.UserID, UserID.c_str());
@@ -138,6 +142,7 @@ void User_Operation::Login(const std::string &UserID, const std::string &Passwor
                     }
                     else {
                         std::cout << "Invalid" << '\n';
+                        valid = false;
                     }
                     return;
                 }
@@ -153,6 +158,7 @@ void User_Operation::Login(const std::string &UserID, const std::string &Passwor
         p = link[p].nex_head;
     }
     std::cout << "Invalid\n";
+    valid = false;
 }
 
 void User_Operation::Logout() {
@@ -197,6 +203,7 @@ void User_Operation::Logout() {
     }
     else {
         std::cout << "Invalid" << '\n';
+        valid = false;
     }
 }
 
@@ -212,10 +219,12 @@ void User_Operation::Insert(const std::string &UserID,
                             int privilege) {
     if (UserName.size() > 30) {
         std::cout << "Invalid" << '\n';
+        valid = false;
         return;
     }
     if (!checkValidity(UserID) || !checkValidity(Password)) {
         std::cout << "Invalid" << '\n';
+        valid = false;
         return;
     }
     User data{};
@@ -316,6 +325,7 @@ void User_Operation::Delete(const std::string &UserID) {
     User data{};
     if (!checkValidity(UserID)) {
         std::cout << "Invalid\n";
+        valid = false;
         return;
     }
     std::strcpy(data.UserID, UserID.c_str());
@@ -338,6 +348,7 @@ void User_Operation::Delete(const std::string &UserID) {
                     flag = true;
                     if (bloc[mid].login) {
                         std::cout << "Invalid" << '\n';
+                        valid = false;
                         return;
                     }
                     deleteNode(link[p].cur_index + mid);
@@ -379,7 +390,42 @@ void User_Operation::Delete(const std::string &UserID) {
     }
     else {
         std::cout << "Invalid" << '\n';
+        valid = false;
     }
+}
+
+User User_Operation::getUser(const std::string & UserID) {
+    User data{};
+    std::strcpy(data.UserID, UserID.c_str());
+    data.UserID_len = static_cast<int>(UserID.size());
+    data.privilege = -1;
+
+    int p = Head.head;
+    while (p != -1) {
+        int size = link[p].size;
+        if (size <= 0) continue;
+        Body.visitNode(p * block_size);
+        if (string_cmp(data.UserID, bloc[0].UserID, data.UserID_len, bloc[0].UserID_len) != -1 &&
+            string_cmp(data.UserID, bloc[size - 1].UserID, data.UserID_len, bloc[size - 1].UserID_len) != 1) {
+            int l = 0, r = size - 1, mid;
+            while (l <= r) {
+                mid = (l + r) / 2;
+                int val = string_cmp(data.UserID, bloc[mid].UserID, data.UserID_len, bloc[mid].UserID_len);
+                if (val == 0) {
+                    return bloc[mid];
+                }
+                if (val == -1) {
+                    r = mid - 1;
+                }
+                else {
+                    l = mid + 1;
+                }
+            }
+            break;
+            }
+        p = link[p].nex_head;
+    }
+    return data;
 }
 
 void User_Operation::changePassword(const std::string &UserID,
@@ -387,6 +433,7 @@ void User_Operation::changePassword(const std::string &UserID,
                                     const std::string &new_Password) {
     if (!checkValidity(UserID) || !checkValidity(new_Password) || !checkValidity(current_Password)) {
         std::cout << "Invalid\n";
+        valid = false;
         return;
     }
     User data{};
@@ -413,6 +460,7 @@ void User_Operation::changePassword(const std::string &UserID,
                     }
                     else {
                         std::cout << "Invalid" << '\n';
+                        valid = false;
                     }
                     return;
                 }
@@ -428,6 +476,7 @@ void User_Operation::changePassword(const std::string &UserID,
         p = link[p].nex_head;
     }
     std::cout << "Invalid" << '\n';
+    valid = false;
 }
 
 bool User_Operation::checkValidity(const std::string &str) {

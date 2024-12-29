@@ -8,8 +8,10 @@
 #include "diary.h"
 #include "finance.h"
 Finance Money ("finance");
+Diary Log("diary");
 User_Operation User_op;
 Book_Operation Book_op;
+bool valid;
 
 User* bloc = nullptr;
 Book* bloc_ = nullptr;
@@ -32,6 +34,7 @@ std::vector<std::string> Split(const std::string &original) {
     while (p < len) {
         if (!isgraph(original[p]) && original[p] != ' ') {
             std::cout << "Invalid\n";
+            valid = false;
             token.clear();
             return token;
         }
@@ -168,6 +171,11 @@ int main() {
     std::string op;
 
     while (getline(std::cin, op)) {
+        valid = true;
+        std::string ID(User_op.current_User.UserID, User_op.current_User.UserID_len);
+        if (User_op.current_User.privilege == 0) {
+            ID = "visitor";
+        }
         std::vector<std::string> token = Split(op);
         if (token.empty()) {
             continue;
@@ -175,6 +183,7 @@ int main() {
         //todo: judge the permission to do current operation.
         if (token[0] == "quit" || token[0] == "exit") {
             if (token.size() != 1) {
+                valid = false;
                 std::cout << "Invalid\n";
                 continue;
             }
@@ -183,54 +192,80 @@ int main() {
         if (token[0] == "su") {
             if (token.size() == 2) {
                 User_op.Login(token[1], "");
+                if (valid) {
+                    Log.addLog(ID, op);
+                }
                 continue;
             }
             if (token.size() == 3) {
                 User_op.Login(token[1], token[2]);
+                if (valid) {
+                    Log.addLog(ID, op);
+                }
                 continue;
             }
             std::cout << "Invalid" << '\n';
+            valid = false;
         }
         else if (token[0] == "logout") {
             if (User_op.current_User.privilege < 1) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             if (token.size() != 1) {
                 std::cout << "Invalid\n";
+                valid = false;
                 continue;
             }
             User_op.Logout();
+            if (valid) {
+                Log.addLog(ID, op);
+            }
         }
         else if (token[0] == "register") {
             if (token.size() != 4) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             User_op.Insert(token[1], token[2], token[3], 1);
+            if (valid) {
+                Log.addLog(ID, op);
+            }
         }
         else if (token[0] == "passwd") {
             if (User_op.current_User.privilege < 1) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             if (token.size() == 3) {
                 if (User_op.current_User.privilege < 7) {
                     std::cout << "Invalid" << '\n';
+                    valid = false;
                     continue;
                 }
                 User_op.changePassword(token[1],"", token[2]);
+                if (valid) {
+                    Log.addLog(ID, op);
+                }
                 continue;
             }
             if (token.size() == 4) {
                 User_op.changePassword(token[1], token[2], token[3]);
+                if (valid) {
+                    Log.addLog(ID, op);
+                }
                 continue;
             }
             std::cout << "Invalid" << '\n';
+            valid = false;
         }
         else if (token[0] == "useradd") {
             if (User_op.current_User.privilege < 3 || token.size() != 5) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             int privilege;
@@ -242,24 +277,34 @@ int main() {
             }
             else {
                 std::cout << "Invalid\n";
+                valid = false;
                 continue;
             }
             if (User_op.current_User.privilege <= privilege) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             User_op.Insert(token[1], token[2], token[4], privilege);
+            if (valid) {
+                Log.addLog(ID, op);
+            }
         }
         else if (token[0] == "delete") {
             if (User_op.current_User.privilege < 7 || token.size() != 2) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             User_op.Delete(token[1]);
+            if (valid) {
+                Log.addLog(ID, op);
+            }
         }
         else if (token.size() > 1 && token[0] == "show" && token[1] == "finance") {
             if (User_op.current_User.privilege < 7) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             if (token.size() == 2) {
@@ -269,100 +314,164 @@ int main() {
             if (token.size() == 3) {
                 if (token[2].size() > 10 || stringToInt(token[2]) == -1) {
                     std::cout << "Invalid" << '\n';
+                    valid = false;
                     continue;
                 }
                 Money.readFinance(stringToInt(token[2]));
                 continue;
             }
             std::cout << "Invalid" << '\n';
+            valid = false;
         }
         else if (token[0] == "show") {
             if (User_op.current_User.privilege < 1) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             if (token.size() == 1) {
                 Book_op.Show(-1, "");
+                if (valid) {
+                    Log.addLog(ID, op);
+                }
                 continue;
             }
             if (token.size() == 2) {
                 std::vector<std::string> inner_token = inner_Split(token[1]);
                 if (inner_token.size() < 2 || getType(inner_token[0]) == 0 || getType(inner_token[0]) == 5) {
                     std::cout << "Invalid" << '\n';
+                    valid = false;
                     continue;
                 }
                 if (inner_token[1].empty()) {
                     std::cout << "Invalid" << '\n';
+                    valid = false;
                     continue;
                 }
                 Book_op.Show(getType(inner_token[0]), inner_token[1]);
+                if (valid) {
+                    Log.addLog(ID, op);
+                }
                 continue;
             }
             std::cout << "Invalid" << '\n';
+            valid = false;
         }
         else if (token[0] == "buy") {
             if (token.size() != 3) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             if (User_op.current_User.privilege < 1) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             if (stringToInt(token[2]) <= 0 || token[2].size() > 10) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             double cost = Book_op.Buy(token[1], stringToInt(token[2]));
             if (cost < 0) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             Money.writeFinance(1, cost);
+            if (valid) {
+                Log.addLog(ID, op);
+            }
         }
         else if (token[0] == "select") {
             if (token.size() != 2) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             if (User_op.current_User.privilege < 3) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             Book_op.Select(token[1]);
+            if (valid) {
+                Log.addLog(ID, op);
+            }
         }
         else if (token[0] == "modify") {
             if (User_op.current_User.privilege < 3) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             Book_op.Modify(op);
+            if (valid) {
+                Log.addLog(ID, op);
+            }
         }
         else if (token[0] == "import") {
             if (User_op.current_User.privilege < 3) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             if (token.size() != 3) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             if (stringToInt(token[1]) <= 0 || token[1].size() > 10) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             double cost = Book_Operation::stringToDouble(token[2]);
             if (cost <= 0) {
                 std::cout << "Invalid" << '\n';
+                valid = false;
                 continue;
             }
             bool check = Book_op.Import(stringToInt(token[1]));
             if (check) {
                 Money.writeFinance(2, cost);
+                if (valid) {
+                    std::string ISBN(Book_op.current_Book.ISBN, Book_op.current_Book.ISBN_len);
+                    op += " ";
+                    op += ISBN;
+                    Log.addLog(ID, op);
+                }
             }
+        }
+        else if (token.size() == 2 && token[0] == "report" && token[1] == "finance" ){
+            if (User_op.current_User.privilege < 7) {
+                std::cout << "Invalid\n" ;
+                valid = false;
+                continue;
+            }
+            std::cout << "-------- Book Transaction Details --------" << '\n';
+            Log.reportFinance();
+        }
+        else if (token.size() == 2 && token[0] == "report" && token[1] == "employee") {
+            if (User_op.current_User.privilege < 7) {
+                std::cout << "Invalid\n" ;
+                valid = false;
+                continue;
+            }
+            std::cout << "-------- Employee Operation Details --------" << '\n';
+            Log.reportEmployee();
+        }
+        else if (token.size() == 1 && token[0] == "log") {
+            std::cout << "------------ System Log ------------" << '\n';
+            Log.printLog();
+
+            std::cout << "-------- Book Transaction Details --------" << '\n';
+            Log.reportFinance();
         }
         else {
             std::cout << "Invalid" << '\n';
+            valid = false;
         }
     }
 }
