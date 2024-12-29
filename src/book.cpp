@@ -375,38 +375,16 @@ void Book_Operation::Modify(const std::string &str) {
                     for (int i = 0; i < token.size() - 1; i++) {
                         int type = getType(inner_token[i * 2]);
                         if (type == 2) {
-                            if (!bloc_[mid].is_new) {
-                                std::string BookName(bloc_[mid].BookName, bloc_[mid].BookName_len);
-                                name_op.Delete(BookName,current_Book.ISBN);
-                            }
-                            name_op.Insert(inner_token[i * 2 + 1], current_Book.ISBN);
                             std::strcpy(bloc_[mid].BookName, inner_token[i * 2 + 1].c_str());
                             bloc_[mid].BookName_len = static_cast<int>(inner_token[i * 2 + 1].size());
                             continue;
                         }
                         if (type == 3) {
-                            if (!bloc_[mid].is_new) {
-                                std::string Author(bloc_[mid].Author, bloc_[mid].Author_len);
-                                author_op.Delete(Author,current_Book.ISBN);
-                            }
-                            author_op.Insert(inner_token[i * 2 + 1], current_Book.ISBN);
                             std::strcpy(bloc_[mid].Author, inner_token[i * 2 + 1].c_str());
                             bloc_[mid].Author_len = static_cast<int>(inner_token[i * 2 + 1].size());
                             continue;
                         }
                         if (type == 4) {
-                            std::vector<std::string> tok;
-                            if (!bloc_[mid].is_new) {
-                                std::string original_keyword(current_Book.Keyword, current_Book.Keyword_len);
-                                tok = Key_Split(original_keyword);
-                                for (const auto & key : tok) {
-                                    keyword_op.Delete(key,current_Book.ISBN);
-                                }
-                            }
-                            tok = Key_Split(inner_token[i * 2 + 1]);
-                            for (const auto & key : tok) {
-                                keyword_op.Insert(key,current_Book.ISBN);
-                            }
                             std::strcpy(bloc_[mid].Keyword, inner_token[i * 2 + 1].c_str());
                             bloc_[mid].Keyword_len = static_cast<int>(inner_token[i * 2 + 1].size());
                             continue;
@@ -693,17 +671,6 @@ void Book_Operation::Insert(const std::string &ISBN) {
 }
 
 void Book_Operation::Insert_(Book data) {
-    std::string Name(current_Book.BookName, current_Book.BookName_len);
-    name_op.Insert(Name, current_Book.ISBN);
-    std::string Author(current_Book.Author, current_Book.Author_len);
-    author_op.Insert(Author, current_Book.ISBN);
-    std::string Keyword(current_Book.Keyword, current_Book.Keyword_len);
-    std::vector<std::string> token = Key_Split(Keyword);
-    for (const auto & i : token) {
-        keyword_op.Insert(i,current_Book.ISBN);
-    }
-
-
     int cur_size = Head.cur_size;
     if (cur_size == 0) {
         int id = Head.addHead(0);
@@ -784,16 +751,6 @@ void Book_Operation::Insert_(Book data) {
 }
 
 void Book_Operation::Delete() {
-    std::string Name(current_Book.BookName, current_Book.BookName_len);
-    name_op.Delete(Name, current_Book.ISBN);
-    std::string Author(current_Book.Author, current_Book.Author_len);
-    author_op.Delete(Author, current_Book.ISBN);
-    std::string Keyword(current_Book.Keyword, current_Book.Keyword_len);
-    std::vector<std::string> token = Key_Split(Keyword);
-    for (const auto & i : token) {
-        keyword_op.Delete(i,current_Book.ISBN);
-    }
-
     int p = Head.head;
     int size;
     while (p != -1) {

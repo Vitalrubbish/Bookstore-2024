@@ -14,6 +14,4 @@ add_executable(code
         src/log.h
         main.cpp
         src/finance.h
-        src/author.h
-        src/keyword.h
 )

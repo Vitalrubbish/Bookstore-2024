@@ -7,9 +7,6 @@
 #include <set>
 #include<algorithm>
 #include <cstring>
-#include "name.h"
-#include "author.h"
-#include "keyword.h"
 
 using std::string;
 using std::fstream;
@@ -163,9 +160,6 @@ public:
 class Book_Operation {
     NodeHead_for_Books Head;
     NodeBody_for_Books Body;
-    name_operation name_op;
-    author_operation author_op;
-    keyword_operation keyword_op;
 public:
 
     std::vector<Book> book_stack;
